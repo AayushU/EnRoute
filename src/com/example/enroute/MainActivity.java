@@ -7,6 +7,7 @@ import android.view.Menu;
 public class MainActivity extends Activity {
 	
 	//Avi is adding a comment
+	//Comment number 2
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
