@@ -4,5 +4,10 @@
     <string name="app_name">EnRoute</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
+    <string name="Search">Search</string>
+    <string name="map_tab">Map</string>
+    <string name="results_tab">Results</string>
+    <string name="search_tab">Search</string>
+    <string name="title_activity_results">ResultsActivity</string>
 
 </resources>
