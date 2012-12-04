@@ -1,10 +1,14 @@
 package com.example.enroute;
 
+import java.util.ArrayList;
+
 import android.app.ActionBar;
-import android.app.FragmentTransaction;
+import android.app.ActionBar.Tab;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.ListFragment;
 import android.support.v4.app.NavUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -12,7 +16,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ResultsActivity extends FragmentActivity implements
 		ActionBar.TabListener {
@@ -41,7 +48,7 @@ public class ResultsActivity extends FragmentActivity implements
 				.setTabListener(this));
 		actionBar.addTab(actionBar.newTab().setText(R.string.map_tab)
 				.setTabListener(this));
-		
+
 		actionBar.show();
 	}
 
@@ -85,33 +92,76 @@ public class ResultsActivity extends FragmentActivity implements
 		return super.onOptionsItemSelected(item);
 	}
 
-	@Override
 	public void onTabSelected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {
-		// When the given tab is selected, show the tab contents in the
-		// container view.
-		Fragment fragment = new DummySectionFragment();
-		Bundle args = new Bundle();
-		
-		//currently it just displays an integer. 
-		//based on tab.getPosition(), we want to display a different item. 
-		
-		
-		args.putInt(DummySectionFragment.ARG_SECTION_NUMBER,
-				tab.getPosition() + 1);
-		fragment.setArguments(args);
-		getSupportFragmentManager().beginTransaction()
-				.replace(R.id.container, fragment).commit();
+
+		// currently it just displays an integer.
+		// based on tab.getPosition(), we want to display a different item.
+
+		// Results pane
+		if (tab.getPosition() == 1) {
+			ListFragment fragment = new ResultsSectionFragment();
+			// Bundle args = new Bundle();
+			// args.putString(DummySectionFragment.ARG_SECTION_NUMBER, "AVI");
+			// fragment.setArguments(args);
+			getSupportFragmentManager().beginTransaction()
+					.replace(R.id.container, fragment).commit();
+		} else {
+			// When the given tab is selected, show the tab contents in the
+			// container view.
+			Fragment fragment = new DummySectionFragment();
+			Bundle args = new Bundle();
+			args.putInt(DummySectionFragment.ARG_SECTION_NUMBER,
+					tab.getPosition() + 1);
+			fragment.setArguments(args);
+			getSupportFragmentManager().beginTransaction()
+					.replace(R.id.container, fragment).commit();
+		}
 	}
 
-	@Override
-	public void onTabUnselected(ActionBar.Tab tab,
-			FragmentTransaction fragmentTransaction) {
-	}
+	public static class ResultsSectionFragment extends ListFragment {
+		/**
+		 * The fragment argument representing the section number for this
+		 * fragment.
+		 */
+		public static final String ARG_SECTION_NUMBER = "section_number";
+		LinearLayout shown = null;
 
-	@Override
-	public void onTabReselected(ActionBar.Tab tab,
-			FragmentTransaction fragmentTransaction) {
+		public ResultsSectionFragment() {
+		}
+		
+		@Override
+		 public void onListItemClick(ListView l, View v, int position, long id)
+	     { 
+			// When clicked, show a toast with the TextView text
+			Toast.makeText(getActivity(), "Test", Toast.LENGTH_LONG)
+					.show();
+			LinearLayout layout = (LinearLayout) v.findViewById(R.id.toshow);
+			layout.setVisibility(View.VISIBLE);
+			if (shown != null)
+				shown.setVisibility(View.GONE);
+			shown = layout;
+	     }
+
+		@Override
+		public View onCreateView(LayoutInflater inflater, ViewGroup container,
+				Bundle savedInstanceState) {
+			// super.onCreateView(inflater, container, savedInstanceState);
+			ArrayList<Place> places = new ArrayList<Place>();
+			Place p1 = new Place("Yale", 0, 10, "2034562823");
+			Place p2 = new Place("Harvard", 20, 5.4, "65055534232");
+			Place p3 = new Place("Princeton", -4.2, 6, "43683262343");
+			places.add(p1);
+			places.add(p2);
+			places.add(p3);
+			ResultsAdapter adapter = new ResultsAdapter(getActivity(), places);
+			setListAdapter(adapter);
+
+			View view = inflater.inflate(R.layout.fragment_results, container,
+					false);
+
+			return view;
+		}
 	}
 
 	/**
@@ -139,6 +189,42 @@ public class ResultsActivity extends FragmentActivity implements
 					ARG_SECTION_NUMBER)));
 			return textView;
 		}
+
+	}
+
+	@Override
+	public void onTabReselected(Tab arg0, android.app.FragmentTransaction arg1) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onTabSelected(Tab arg0, android.app.FragmentTransaction arg1) {
+		// currently it just displays an integer.
+		// based on tab.getPosition(), we want to display a different item.
+
+		// Results pane
+		if (arg0.getPosition() == 1) {
+			ListFragment fragment = new ResultsSectionFragment();
+			getSupportFragmentManager().beginTransaction()
+					.replace(R.id.container, fragment).commit();
+		} else {
+			// When the given tab is selected, show the tab contents in the
+			// container view.
+			Fragment fragment = new DummySectionFragment();
+			Bundle args = new Bundle();
+			args.putInt(DummySectionFragment.ARG_SECTION_NUMBER,
+					arg0.getPosition() + 1);
+			fragment.setArguments(args);
+			getSupportFragmentManager().beginTransaction()
+					.replace(R.id.container, fragment).commit();
+		}
+	}
+
+	@Override
+	public void onTabUnselected(Tab arg0, android.app.FragmentTransaction arg1) {
+		// TODO Auto-generated method stub
+
 	}
 
 }
