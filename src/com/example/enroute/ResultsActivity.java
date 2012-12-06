@@ -3,8 +3,11 @@ package com.example.enroute;
 import java.util.ArrayList;
 
 import android.app.ActionBar;
+import android.app.ProgressDialog;
 import android.app.ActionBar.Tab;
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
@@ -16,215 +19,221 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class ResultsActivity extends FragmentActivity implements
-		ActionBar.TabListener {
+    ActionBar.TabListener {
 
-	/**
-	 * The serialization (saved instance state) Bundle key representing the
-	 * current tab position.
-	 */
-	private static final String STATE_SELECTED_NAVIGATION_ITEM = "selected_navigation_item";
+  // -------------------------------------------------------
+  // Instance Variables
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_results);
+  // saved tab state (bundle key representing tab position)
+  private static final String TAB_STATE = "selected_navigation_item";
 
-		// Set up the action bar to show tabs.
-		final ActionBar actionBar = getActionBar();
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		// Show the Up button in the action bar.
-		actionBar.setDisplayHomeAsUpEnabled(true);
+  // -------------------------------------------------------
+  // onCreate
 
-		// For each of the sections in the app, add a tab to the action bar.
-		actionBar.addTab(actionBar.newTab().setText(R.string.search_tab)
-				.setTabListener(this));
-		actionBar.addTab(actionBar.newTab().setText(R.string.results_tab)
-				.setTabListener(this));
-		actionBar.addTab(actionBar.newTab().setText(R.string.map_tab)
-				.setTabListener(this));
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
 
-		actionBar.show();
-	}
+    // initialize UI
+    setContentView(R.layout.activity_results);
 
-	@Override
-	public void onRestoreInstanceState(Bundle savedInstanceState) {
-		// Restore the previously serialized current tab position.
-		if (savedInstanceState.containsKey(STATE_SELECTED_NAVIGATION_ITEM)) {
-			getActionBar().setSelectedNavigationItem(
-					savedInstanceState.getInt(STATE_SELECTED_NAVIGATION_ITEM));
-		}
-	}
+    // initialize Action Bar Tabs
+    initializeActionBar();
+  }
 
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		// Serialize the current tab position.
-		outState.putInt(STATE_SELECTED_NAVIGATION_ITEM, getActionBar()
-				.getSelectedNavigationIndex());
-	}
+  /****************************************************************************
+   * 
+   * Fragments
+   * 
+   ***************************************************************************/
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.activity_results, menu);
-		return true;
-	}
+  // Results (List) Fragment
+  public static class ResultsSectionFragment extends ListFragment {
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			// This ID represents the Home or Up button. In the case of this
-			// activity, the Up button is shown. Use NavUtils to allow users
-			// to navigate up one level in the application structure. For
-			// more details, see the Navigation pattern on Android Design:
-			//
-			// http://developer.android.com/design/patterns/navigation.html#up-vs-back
-			//
-			NavUtils.navigateUpFromSameTask(this);
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
+    // instance variables
+    public static final String ARG_SECTION_NUMBER = "section_number";
+    private LinearLayout shown = null;
 
-	public void onTabSelected(ActionBar.Tab tab,
-			FragmentTransaction fragmentTransaction) {
+    // constructor
+    public ResultsSectionFragment() {
+    }
 
-		// currently it just displays an integer.
-		// based on tab.getPosition(), we want to display a different item.
+    // -----------------------------------------------------
+    // onClick handler for list item
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
 
-		// Results pane
-		if (tab.getPosition() == 1) {
-			ListFragment fragment = new ResultsSectionFragment();
-			// Bundle args = new Bundle();
-			// args.putString(DummySectionFragment.ARG_SECTION_NUMBER, "AVI");
-			// fragment.setArguments(args);
-			getSupportFragmentManager().beginTransaction()
-					.replace(R.id.container, fragment).commit();
-		} else {
-			// When the given tab is selected, show the tab contents in the
-			// container view.
-			Fragment fragment = new DummySectionFragment();
-			Bundle args = new Bundle();
-			args.putInt(DummySectionFragment.ARG_SECTION_NUMBER,
-					tab.getPosition() + 1);
-			fragment.setArguments(args);
-			getSupportFragmentManager().beginTransaction()
-					.replace(R.id.container, fragment).commit();
-		}
-	}
+      LinearLayout layout = (LinearLayout) v.findViewById(R.id.toshow);
+      layout.setVisibility(View.VISIBLE);
+      if (shown != null)
+        shown.setVisibility(View.GONE);
+      shown = layout;
+    }
 
-	public static class ResultsSectionFragment extends ListFragment {
-		/**
-		 * The fragment argument representing the section number for this
-		 * fragment.
-		 */
-		public static final String ARG_SECTION_NUMBER = "section_number";
-		LinearLayout shown = null;
+    // -----------------------------------------------------
+    // ??
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+        Bundle savedInstanceState) {
+      // super.onCreateView(inflater, container, savedInstanceState);
 
-		public ResultsSectionFragment() {
-		}
-		
-		@Override
-		 public void onListItemClick(ListView l, View v, int position, long id)
-	     { 
-			// When clicked, show a toast with the TextView text
-			Toast.makeText(getActivity(), "Test", Toast.LENGTH_LONG)
-					.show();
-			LinearLayout layout = (LinearLayout) v.findViewById(R.id.toshow);
-			layout.setVisibility(View.VISIBLE);
-			if (shown != null)
-				shown.setVisibility(View.GONE);
-			shown = layout;
-	     }
+      // initialize dummy data
+      ArrayList<Place> places = new ArrayList<Place>();
+      Place p1 = new Place("Yale", 0, 10, "2034562823");
+      Place p2 = new Place("Harvard", 20, 5.4, "65055534232");
+      Place p3 = new Place("Princeton", -4.2, 6, "43683262343");
+      places.add(p1);
+      places.add(p2);
+      places.add(p3);
 
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			// super.onCreateView(inflater, container, savedInstanceState);
-			ArrayList<Place> places = new ArrayList<Place>();
-			Place p1 = new Place("Yale", 0, 10, "2034562823");
-			Place p2 = new Place("Harvard", 20, 5.4, "65055534232");
-			Place p3 = new Place("Princeton", -4.2, 6, "43683262343");
-			places.add(p1);
-			places.add(p2);
-			places.add(p3);
-			ResultsAdapter adapter = new ResultsAdapter(getActivity(), places);
-			setListAdapter(adapter);
+      // initialize and set listAdapter
+      ResultsAdapter adapter = new ResultsAdapter(getActivity(), places);
+      setListAdapter(adapter);
 
-			View view = inflater.inflate(R.layout.fragment_results, container,
-					false);
+      // return final UI
+      View view = inflater.inflate(R.layout.fragment_results, container, false);
+      return view;
+    }
+  }
 
-			return view;
-		}
-	}
+  
+  // Map Fragment
+  public static class MapSectionFragment extends Fragment {
 
-	/**
-	 * A dummy fragment representing a section of the app, but that simply
-	 * displays dummy text.
-	 */
-	public static class DummySectionFragment extends Fragment {
-		/**
-		 * The fragment argument representing the section number for this
-		 * fragment.
-		 */
-		public static final String ARG_SECTION_NUMBER = "section_number";
+    // instance variables
+    public static final String ARG_SECTION_NUMBER = "section_number";
 
-		public DummySectionFragment() {
-		}
+    // constructor
+    public MapSectionFragment() {
+    }
 
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			// Create a new TextView and set its text to the fragment's section
-			// number argument value.
-			TextView textView = new TextView(getActivity());
-			textView.setGravity(Gravity.CENTER);
-			textView.setText(Integer.toString(getArguments().getInt(
-					ARG_SECTION_NUMBER)));
-			return textView;
-		}
+    // onCreate
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+        Bundle savedInstanceState) {
 
-	}
+      // for now just put a nice lil text box
+      TextView textView = new TextView(getActivity());
+      textView.setGravity(Gravity.CENTER);
+      textView.setText(R.string.map_tab);
+      return textView;
+      
+    }
 
-	@Override
-	public void onTabReselected(Tab arg0, android.app.FragmentTransaction arg1) {
-		// TODO Auto-generated method stub
+  }
 
-	}
+  /****************************************************************************
+   * 
+   * Tabs Code
+   * 
+   ***************************************************************************/
 
-	@Override
-	public void onTabSelected(Tab arg0, android.app.FragmentTransaction arg1) {
-		// currently it just displays an integer.
-		// based on tab.getPosition(), we want to display a different item.
+  // initialize the action bar
+  private void initializeActionBar() {
+    // Set up the action bar to show tabs.
+    final ActionBar actionBar = getActionBar();
+    actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+    // Show the Up button in the action bar.
+    actionBar.setDisplayHomeAsUpEnabled(true);
 
-		// Results pane
-		if (arg0.getPosition() == 1) {
-			ListFragment fragment = new ResultsSectionFragment();
-			getSupportFragmentManager().beginTransaction()
-					.replace(R.id.container, fragment).commit();
-		} else {
-			// When the given tab is selected, show the tab contents in the
-			// container view.
-			Fragment fragment = new DummySectionFragment();
-			Bundle args = new Bundle();
-			args.putInt(DummySectionFragment.ARG_SECTION_NUMBER,
-					arg0.getPosition() + 1);
-			fragment.setArguments(args);
-			getSupportFragmentManager().beginTransaction()
-					.replace(R.id.container, fragment).commit();
-		}
-	}
+    // For each of the sections in the app, add a tab to the action bar.
+    actionBar.addTab(actionBar.newTab().setText(R.string.list_tab)
+        .setTabListener(this));
+    actionBar.addTab(actionBar.newTab().setText(R.string.map_tab)
+        .setTabListener(this));
 
-	@Override
-	public void onTabUnselected(Tab arg0, android.app.FragmentTransaction arg1) {
-		// TODO Auto-generated method stub
+    actionBar.show();
+  }
 
-	}
+  // tab selection etc
+  @Override
+  public void onTabSelected(Tab arg0, android.app.FragmentTransaction arg1) {
+    
+    //will hold our new fragment object
+    Fragment fragment;
+    
+    //determine which fragment to build
+    switch ( arg0.getPosition() ) {
+    
+    case 0:  //results tab
+      fragment = new ResultsSectionFragment();
+      break;
+    case 1:  //map tab
+      fragment = new MapSectionFragment();
+      break;
+    default:  //fallback
+      fragment = new ResultsSectionFragment();
+      break;
+    }
+    
+    //build that fragment
+    getSupportFragmentManager().beginTransaction()
+    .replace(R.id.container, fragment).commit();
+    
+  }
+
+  @Override
+  public void onTabReselected(Tab arg0, android.app.FragmentTransaction arg1) {
+    // TODO Auto-generated method stub
+  }
+
+  @Override
+  public void onTabUnselected(Tab arg0, android.app.FragmentTransaction arg1) {
+    // TODO Auto-generated method stub
+
+  }
+
+  // instance states
+  @Override
+  public void onRestoreInstanceState(Bundle savedInstanceState) {
+
+    // restore tabs to previous state
+    if (savedInstanceState.containsKey(TAB_STATE)) {
+      int prevState = savedInstanceState.getInt(TAB_STATE);
+      getActionBar().setSelectedNavigationItem(prevState);
+    }
+
+  }
+
+  @Override
+  public void onSaveInstanceState(Bundle outState) {
+
+    // save current tab state
+    int curState = getActionBar().getSelectedNavigationIndex();
+    outState.putInt(TAB_STATE, curState);
+
+  }
+
+  // options menu
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    // Inflate the menu; this adds items to the action bar if it is present.
+    getMenuInflater().inflate(R.menu.activity_results, menu);
+    return true;
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+    case android.R.id.home:
+      // This ID represents the Home or Up button. In the case of this
+      // activity, the Up button is shown. Use NavUtils to allow users
+      // to navigate up one level in the application structure. For
+      // more details, see the Navigation pattern on Android Design:
+      //
+      // http://developer.android.com/design/patterns/navigation.html#up-vs-back
+      //
+      NavUtils.navigateUpFromSameTask(this);
+      return true;
+    }
+    return super.onOptionsItemSelected(item);
+  }
 
 }

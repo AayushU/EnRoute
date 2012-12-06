@@ -30,8 +30,7 @@
         <activity
             android:name="com.example.enroute.ResultsActivity"
             android:label="@string/title_activity_results"
-            android:parentActivityName="com.example.enroute.MainActivity"
-            android:theme="@android:style/Theme.NoTitleBar" >
+            android:parentActivityName="com.example.enroute.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.enroute.MainActivity" />
