@@ -107,13 +107,12 @@ public class MainActivity extends Activity {
       searchHandler.postDelayed(new Runnable() {
          public void run() {
            
-           //close the progress dialog
-           searchDialog.dismiss();
-           
-           //and start new intent to show results page
+           //start new intent to show results page
            Intent intent = new Intent(mainContext, ResultsActivity.class);
            startActivityForResult(intent, 1);
 
+           //and close the progress dialog
+           searchDialog.dismiss();
          }
       }, 0);  //0ms 
 
