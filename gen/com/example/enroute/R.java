@@ -40,15 +40,16 @@ public final class R {
         public static final int activity_results=0x7f060001;
     }
     public static final class string {
-        public static final int Search=0x7f040003;
+        public static final int Search=0x7f040002;
         public static final int app_name=0x7f040000;
-        public static final int directions=0x7f040008;
-        public static final int hello_world=0x7f040001;
-        public static final int map_tab=0x7f040004;
-        public static final int menu_settings=0x7f040002;
-        public static final int results_tab=0x7f040005;
-        public static final int search_tab=0x7f040006;
-        public static final int title_activity_results=0x7f040007;
+        public static final int destinationPrompt=0x7f040008;
+        public static final int directions=0x7f040007;
+        public static final int map_tab=0x7f040003;
+        public static final int menu_settings=0x7f040001;
+        public static final int poiPrompt=0x7f040009;
+        public static final int results_tab=0x7f040004;
+        public static final int search_tab=0x7f040005;
+        public static final int title_activity_results=0x7f040006;
     }
     public static final class style {
         /** 

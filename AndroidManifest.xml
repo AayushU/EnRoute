@@ -13,24 +13,30 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+        
+        
+        <!--  Main Activity -->
         <activity
             android:name="com.example.enroute.MainActivity"
             android:label="@string/app_name" 
             android:theme="@android:style/Theme.NoTitleBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        <!--  Results Activity -->
         <activity
             android:name="com.example.enroute.ResultsActivity"
             android:label="@string/title_activity_results"
-            android:parentActivityName="com.example.enroute.MainActivity" >
+            android:parentActivityName="com.example.enroute.MainActivity"
+            android:theme="@android:style/Theme.NoTitleBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.enroute.MainActivity" />
         </activity>
+        
     </application>
 
 </manifest>

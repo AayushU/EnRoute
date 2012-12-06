@@ -1,20 +1,34 @@
+/*
+ *   defines the Place object to store POI result
+ * 
+ * 
+ */
 package com.example.enroute;
 
 public class Place {
-	String name;
-	double distance;
-	double distanceOffRoute;
-	String phoneNumber;
+  
+  //-------------------------------------------------------
+  // instance variables
+	private String name;
+	private double distance;
+	private double distanceOffRoute;
+	private String phoneNumber;
 
-	public Place(String name, double distance, double distanceOffRoute,
-			String phoneNumber) {
+	//-------------------------------------------------------
+  // constructor
+	public Place(String name, double distance, double distanceOffRoute, 
+	    String phoneNumber) {
 		super();
+		
+		//set local vars
 		this.name = name;
 		this.distance = distance;
 		this.distanceOffRoute = distanceOffRoute;
 		this.phoneNumber = phoneNumber;
 	}
 
+	//-------------------------------------------------------
+	// Accessors + Mutators
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
@@ -27,23 +41,24 @@ public class Place {
 		this.name = name;
 	}
 
+	public String getName() {
+	  return name;
+	}
+	 
 	public void setDistance(double distance) {
 		this.distance = distance;
-	}
-
-	public String getName() {
-		return name;
 	}
 
 	public double getDistance() {
 		return distance;
 	}
 
+	public void setDistanceOffRoute(double distanceOffRoute) {
+	  this.distanceOffRoute = distanceOffRoute;
+	}
+	
 	public double getDistanceOffRoute() {
 		return distanceOffRoute;
 	}
 
-	public void setDistanceOffRoute(double distanceOffRoute) {
-		this.distanceOffRoute = distanceOffRoute;
-	}
 }
