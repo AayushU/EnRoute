@@ -44,6 +44,9 @@ public class MainActivity extends Activity {
 		
 	}
 
+	
+  //-------------------------------------------------------
+  // what do these two do?
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -77,19 +80,22 @@ public class MainActivity extends Activity {
 	}
 	
 	
-
 	//-------------------------------------------------------
 	//asynchronous task for results lookup
   private class backgroundSearchTask extends AsyncTask<String, Integer, String> {
     
     //run our background task
     protected String doInBackground(String... trash) {
-
-      //call the main search algorithm
+    
+      //get values from UI
       String destination = destinationInput.getText().toString();
       String query = queryInput.getText().toString();
-      //loadSearchResults( destination, query);
       
+      //call the main search algorithm
+      SearchBase sb = new SearchBase();
+      sb.loadSearchResults( destination, query );
+      
+      //return junk string
       String retVal = "";
       return retVal;
     }   
