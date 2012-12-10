@@ -86,9 +86,9 @@ public class ResultsActivity extends FragmentActivity implements
 
       // initialize dummy data
       ArrayList<Place> places = new ArrayList<Place>();
-      Place p1 = new Place("Yale", 0, 10, "2034562823");
-      Place p2 = new Place("Harvard", 20, 5.4, "65055534232");
-      Place p3 = new Place("Princeton", -4.2, 6, "43683262343");
+      Place p1 = new Place("Zoo", "1234567890", "41313133", "-72925149", " 51 Prospect Street New Haven, CT 06511", 1.5, 3 );
+      Place p2 = new Place("Commons", "01234567890", "4131187", "-72925669", "500 College Street New Haven, CT 06511", 5, 2 );
+      Place p3 = new Place("Sterling", "1112223333", "4130000", "-72925900", "  120 High Street New Haven, CT 06511", -3, 4 );
       places.add(p1);
       places.add(p2);
       places.add(p3);
