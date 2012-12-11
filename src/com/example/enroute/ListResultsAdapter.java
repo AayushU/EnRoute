@@ -11,11 +11,11 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class ResultsAdapter extends ArrayAdapter<Place> {
+public class ListResultsAdapter extends ArrayAdapter<Place> {
 	private final List<Place> list;
 	private final Activity context;
 
-	public ResultsAdapter(Activity context, List<Place> list) {
+	public ListResultsAdapter(Activity context, List<Place> list) {
 		super(context, R.layout.results_row_layout, list);
 		this.context = context;
 		this.list = list;

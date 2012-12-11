@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">EnRoute</string>
-    <string name="menu_settings">Settings</string>
-    <string name="Search">Search</string>
-    <string name="map_tab">Map</string>
-    <string name="list_tab">List</string>
-    <string name="title_activity_results">ResultsActivity</string>
-    <string name="directions">Get Directions</string>
-    <string name="destinationPrompt">Destination</string>
-    <string name="poiPrompt">POI</string>
+	<string name="app_name">EnRoute</string>
+	<string name="menu_settings">Settings</string>
+	<string name="Search">Search</string>
+	<string name="map_tab">Map</string>
+	<string name="list_tab">List</string>
+	<string name="title_activity_results">Back to search</string>
+	<string name="results_count">%d Results Found</string>
+	<string name="directions">Get Directions</string>
+	<string name="explanation">EnRoute helps you find businesses and POI\'s along your route!</string>	
+	<string name="destinationPrompt">Destination</string>
+	<string name="poiPrompt">POI</string>
+	<string name="baysMapApiKey">0UQC4O49bTWiUFcwWual-rDGrH03_Cy6yTbP9nA</string>
 
 </resources>
