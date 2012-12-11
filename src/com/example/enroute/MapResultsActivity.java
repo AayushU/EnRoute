@@ -1,6 +1,7 @@
 package com.example.enroute;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
@@ -45,8 +46,8 @@ public class MapResultsActivity extends MapActivity implements LocationListener,
   private LocationListener locListener;
 
   //current location
-  private double curLat;
-  private double curLong;
+  private Double curLat;
+  private Double curLong;
  
   
   //----------------------------------------------------------------
@@ -61,19 +62,24 @@ public class MapResultsActivity extends MapActivity implements LocationListener,
     
     //initialize instance vars
     mainContext = this;
-    
-    //load results from data passed to intent
-    loadPassedData();
+    curLat = 0.0;
+    curLong = 0.0;
     
     //setup location listener
     locManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
     locListener = new MyLocationListener();
     
+    //ensure GPS is enabled
+    checkGPS();
+    
+    //load results from data passed to intent
+    loadPassedData();
+    
     //setup map
     setupMapView();
     
-    //and finally ensure GPS is enabled
-    checkGPS();
+    //load results overlays
+    addPins();
     
   }
   
@@ -84,14 +90,43 @@ public class MapResultsActivity extends MapActivity implements LocationListener,
     
     // initialize dummy data
     results = new ArrayList<Place>();
-    Place p1 = new Place("Zoo", "1234567890", "41313133", "-72925149", " 51 Prospect Street New Haven, CT 06511", 1.5, 3 );
-    Place p2 = new Place("Commons", "01234567890", "4131187", "-72925669", "500 College Street New Haven, CT 06511", 5, 2 );
-    Place p3 = new Place("Sterling", "1112223333", "4130000", "-72925900", "  120 High Street New Haven, CT 06511", -3, 4 );
+    Place p1 = new Place("Zoo", "1234567890", 41313133, -72925149, " 51 Prospect Street New Haven, CT 06511", 1.5, 3 );
+    Place p2 = new Place("Commons", "01234567890", 41311876, -72925669, "500 College Street New Haven, CT 06511", 5, 2 );
+    Place p3 = new Place("Grove Cemetary", "1112223333", 41312972, -72928244, "  120 High Street New Haven, CT 06511", -3, 4 );
     results.add(p1);
     results.add(p2);
     results.add(p3);
   }
   
+  
+  //add pin overlays to map 
+  public void addPins(){
+    
+    //setup itemized overlay list to hold all pins
+    List<Overlay> mapOverlays = mapView.getOverlays();
+    Drawable pinIcon = this.getResources().getDrawable(R.drawable.redpin);
+    PlaceItemizedOverlay pins = new PlaceItemizedOverlay(pinIcon, this);
+    
+    //iterate over results
+    for (Place p : results){
+      
+      //get location
+      GeoPoint gp = new GeoPoint(p.getLatitude(), p.getLongitude());
+      
+      //create description text
+      String desc = p.getAddress() + "\n\n" + "Distance: ";
+      desc += Double.toString( p.getDistance() );
+      desc += "\n" + "Offset: ";
+      desc += Double.toString( p.getDistanceOffRoute() );
+      
+      //create overlay
+      OverlayItem oi = new OverlayItem(gp, p.getName(), desc);
+      pins.addOverlay(oi);
+    }
+        
+    //add pins to map
+    mapOverlays.add(pins);
+  }
 
   //----------------------------------------------------------------
   //handle onClick of list view toggle button
@@ -115,14 +150,13 @@ public class MapResultsActivity extends MapActivity implements LocationListener,
 
     //setup map defaults
     mapView.setBuiltInZoomControls(true);
-    mapController.setCenter(Constants.ZOO);
+    mapController.setCenter(Constants.COMMONS);
     mapController.setZoom(Constants.DEFAULT_ZOOM);
     
     //display current location
     setupSelf();
 
   }
-
   
   //add an overlay for current location
   //and compass direction to the map
@@ -133,6 +167,13 @@ public class MapResultsActivity extends MapActivity implements LocationListener,
     myLocation.enableCompass();
     myLocation.enableMyLocation();
     mapView.getOverlays().add(myLocation);
+    
+    //center on self
+    if (curLat != 0.0){
+      GeoPoint gp = new GeoPoint(curLat.intValue(), curLong.intValue());
+      mapController.setCenter(gp);
+    }
+    
   }  
 
   

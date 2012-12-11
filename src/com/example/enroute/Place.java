@@ -11,8 +11,8 @@ public class Place {
   // instance variables
 	private String name;
 	private String phoneNumber;
-	private String latitude;
-	private String longitude;
+	private int latitude;
+	private int longitude;
 	private String address;
 	private double distance;
 	private double distanceOffRoute;
@@ -20,7 +20,7 @@ public class Place {
 
 	//-------------------------------------------------------
   // constructor 
-	public Place(String name, String phoneNumber, String lat, String lon,
+	public Place(String name, String phoneNumber, int lat, int lon,
 	    String address, double distance, double distanceOffRoute) {
 		super();
 		
@@ -53,19 +53,19 @@ public class Place {
 		return phoneNumber;
 	}
 	
-	public void setLatitude(String new_latitude) {
+	public void setLatitude(int new_latitude) {
 	  this.latitude = new_latitude;
 	}
 	
-	public String getLatitude() {
+	public int getLatitude() {
 	  return latitude;
 	}
 	
-	public void setLongitude(String new_longitude) {
+	public void setLongitude(int new_longitude) {
 	  this.longitude = new_longitude;
 	}
 	
-	public String getLongitude() {
+	public int getLongitude() {
 	  return longitude;
 	}
 	

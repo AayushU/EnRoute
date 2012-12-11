@@ -73,9 +73,9 @@ public class ListResultsActivity extends ListActivity{
     
     // initialize dummy data
     results = new ArrayList<Place>();
-    Place p1 = new Place("Zoo", "1234567890", "41313133", "-72925149", " 51 Prospect Street New Haven, CT 06511", 1.5, 3 );
-    Place p2 = new Place("Commons", "01234567890", "4131187", "-72925669", "500 College Street New Haven, CT 06511", 5, 2 );
-    Place p3 = new Place("Sterling", "1112223333", "4130000", "-72925900", "  120 High Street New Haven, CT 06511", -3, 4 );
+    Place p1 = new Place("Zoo", "1234567890", 41313133, -72925149, " 51 Prospect Street New Haven, CT 06511", 1.5, 3 );
+    Place p2 = new Place("Commons", "01234567890", 41311876, -72925669, "500 College Street New Haven, CT 06511", 5, 2 );
+    Place p3 = new Place("Grove Cemetary", "1112223333", 41312972, -72928244, "  120 High Street New Haven, CT 06511", -3, 4 );
     results.add(p1);
     results.add(p2);
     results.add(p3);

@@ -108,7 +108,7 @@ public class SearchActivity extends Activity {
          public void run() {
            
            //start new intent to show results page
-           Intent intent = new Intent(mainContext, MapResultsActivity.class);
+           Intent intent = new Intent(mainContext, ListResultsActivity.class);
            startActivityForResult(intent, 1);
 
            //and close the progress dialog
