@@ -5,7 +5,10 @@
  */
 package com.example.enroute;
 
-public class Place {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Place implements Parcelable{
   
   //-------------------------------------------------------
   // instance variables
@@ -35,8 +38,11 @@ public class Place {
 		
 	}
 
-	//-------------------------------------------------------
-	// Accessors + Mutators
+  /********************************************************
+   * 
+   *  Getters and Setters
+   * 
+   ********************************************************/
   public void setName(String new_name) {
     this.name = new_name;
   }
@@ -92,5 +98,57 @@ public class Place {
 	public double getDistanceOffRoute() {
 		return distanceOffRoute;
 	}
+	
+	/********************************************************
+	 * 
+	 *  Parceling
+	 * 
+	 ********************************************************/
+
+	  
+  public Place(Parcel in){
+    
+      String[] data = new String[7];
+      in.readStringArray(data);
+      
+      //read in parcelled data as strings
+      this.name = data[0];
+      this.phoneNumber = data[1];
+      this.latitude = Integer.parseInt( data[2] );
+      this.longitude = Integer.parseInt( data[3] );
+      this.address = data[4];
+      this.distance = Double.parseDouble( data[5] );
+      this.distanceOffRoute = Double.parseDouble( data[6] );
+      
+  }
+
+
+  @Override
+  public int describeContents(){
+      return 0;
+  }
+  
+  @Override
+  public void writeToParcel(Parcel dest, int flags) {
+      dest.writeStringArray(new String[] {
+          this.name,
+          this.phoneNumber,
+          Integer.toString( this.latitude ),
+          Integer.toString( this.longitude ),
+          this.address,
+          Double.toString( this.distance ),
+          Double.toString( this.distanceOffRoute )
+     });
+  }
+  
+  public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+      public Place createFromParcel(Parcel in) {
+          return new Place(in); 
+      }
+  
+      public Place[] newArray(int size) {
+          return new Place[size];
+      }
+  };
 
 }

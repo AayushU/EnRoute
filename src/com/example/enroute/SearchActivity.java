@@ -1,8 +1,11 @@
 package com.example.enroute;
 
+import java.util.ArrayList;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -107,9 +110,27 @@ public class SearchActivity extends Activity {
       searchHandler.postDelayed(new Runnable() {
          public void run() {
            
-           //start new intent to show results page
+           //TODO: this should obviously be real results data from SearchBase job
+           //generate dummy results data
+           ArrayList<Place> results = new ArrayList<Place>();
+           Place p1 = new Place("Zoo", "1234567890", 41313133, -72925149, "51 Prospect Street New Haven, CT 06511", 1.5, 3 );
+           Place p2 = new Place("Commons", "01234567890", 41311876, -72925669, "500 College Street New Haven, CT 06511", 5, 2 );
+           Place p3 = new Place("Grove Cemetary", "1112223333", 41312972, -72928244, "120 High Street New Haven, CT 06511", -3, 4 );
+           results.add(p1);
+           results.add(p2);
+           results.add(p3);
+           
+           //create new intent to show results page
            Intent intent = new Intent(mainContext, ListResultsActivity.class);
-           startActivityForResult(intent, 1);
+           
+           //load the intent with our results data
+           ArrayList <Place> rpack = new ArrayList <Place>();
+           for (int i = 0; i < results.size(); i++)
+             rpack.add (results.get(i));
+           intent.putParcelableArrayListExtra ("results", rpack);
+           
+           //show the intent
+           startActivity(intent);
 
            //and close the progress dialog
            progressDialog.dismiss();

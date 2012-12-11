@@ -73,7 +73,7 @@ public class MapResultsActivity extends MapActivity implements LocationListener,
     checkGPS();
     
     //load results from data passed to intent
-    loadPassedData();
+    loadPassedData( getIntent() );
     
     //setup map
     setupMapView();
@@ -83,19 +83,18 @@ public class MapResultsActivity extends MapActivity implements LocationListener,
     
   }
   
-  //load results from intent bundle
-  protected void loadPassedData(){
+  //load results from intent parcel
+  protected void loadPassedData( Intent intent){
     
-    //TODO:  right now this is just dummy data!
-    
-    // initialize dummy data
+    //initialize results array
     results = new ArrayList<Place>();
-    Place p1 = new Place("Zoo", "1234567890", 41313133, -72925149, "51 Prospect Street New Haven, CT 06511", 1.5, 3 );
-    Place p2 = new Place("Commons", "01234567890", 41311876, -72925669, "500 College Street New Haven, CT 06511", 5, 2 );
-    Place p3 = new Place("Grove Cemetary", "1112223333", 41312972, -72928244, "120 High Street New Haven, CT 06511", -3, 4 );
-    results.add(p1);
-    results.add(p2);
-    results.add(p3);
+    
+    //unpack intent parcel into results array
+    ArrayList<Place> rpack = intent.getParcelableArrayListExtra ("results");
+    for (int i = 0; i < rpack.size (); i++){
+     results.add( rpack.get(i) );
+    }
+
   }
   
   
@@ -134,8 +133,17 @@ public class MapResultsActivity extends MapActivity implements LocationListener,
   //handle onClick of list view toggle button
   public void switchToListView(View btn){
     
+    //create new intent to show results page
     Intent intent = new Intent(mainContext, ListResultsActivity.class);
-    startActivityForResult(intent, 1);
+    
+    //load the intent with our results data
+    ArrayList <Place> rpack = new ArrayList <Place>();
+    for (int i = 0; i < results.size(); i++)
+      rpack.add (results.get(i));
+    intent.putParcelableArrayListExtra ("results", rpack);
+    
+    //show the intent
+    startActivity(intent);
     
   }
   

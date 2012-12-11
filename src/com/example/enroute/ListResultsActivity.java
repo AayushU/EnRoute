@@ -16,6 +16,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -53,7 +54,7 @@ public class ListResultsActivity extends ListActivity{
     mainContext = this;
     
     //load results from data passed to intent
-    loadPassedData();
+    loadPassedData( getIntent() );
     
    //update results count
    TextView listResultsCount = (TextView) findViewById(R.id.listResultsCount);
@@ -66,19 +67,19 @@ public class ListResultsActivity extends ListActivity{
   }
   
   
-  //load results from intent bundle
-  protected void loadPassedData(){
+  
+  //load results from intent parcel
+  protected void loadPassedData( Intent intent){
     
-    //TODO:  right now this is just dummy data!
-    
-    // initialize dummy data
+    //initialize results array
     results = new ArrayList<Place>();
-    Place p1 = new Place("Zoo", "1234567890", 41313133, -72925149, " 51 Prospect Street New Haven, CT 06511", 1.5, 3 );
-    Place p2 = new Place("Commons", "01234567890", 41311876, -72925669, "500 College Street New Haven, CT 06511", 5, 2 );
-    Place p3 = new Place("Grove Cemetary", "1112223333", 41312972, -72928244, "  120 High Street New Haven, CT 06511", -3, 4 );
-    results.add(p1);
-    results.add(p2);
-    results.add(p3);
+    
+    //unpack intent parcel into results array
+    ArrayList<Place> rpack = intent.getParcelableArrayListExtra ("results");
+    for (int i = 0; i < rpack.size (); i++){
+     results.add( rpack.get(i) );
+    }
+
   }
 
     
@@ -96,8 +97,17 @@ public class ListResultsActivity extends ListActivity{
   // onClick handler for map view toggle
   public void switchToMapView(View btn){
     
+    //create new intent to show results page
     Intent intent = new Intent(mainContext, MapResultsActivity.class);
-    startActivityForResult(intent, 1);
+    
+    //load the intent with our results data
+    ArrayList <Place> rpack = new ArrayList <Place>();
+    for (int i = 0; i < results.size(); i++)
+      rpack.add (results.get(i));
+    intent.putParcelableArrayListExtra ("results", rpack);
+    
+    //show the intent
+    startActivity(intent);
     
   }
 
