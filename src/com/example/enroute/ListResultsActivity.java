@@ -9,6 +9,7 @@ import android.app.ProgressDialog;
 import android.app.ActionBar.Tab;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -29,98 +30,103 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ListResultsActivity extends ListActivity{
+public class ListResultsActivity extends ListActivity {
 
-  // -------------------------------------------------------
-  // Instance Variables
-  
-  //misc
-  private Context mainContext;
-  
-  //list config
-  private LinearLayout shown = null;
-  ArrayList<Place> results;
-  
-  //polyline
-  String polyline;
-  
-  
-  // -------------------------------------------------------
-  // onCreate
-  protected void onCreate(Bundle icicle) {
-    super.onCreate(icicle);
-    
-    // initialize layout
-    setContentView(R.layout.activity_list);
-    
-    //initialize instance vars
-    mainContext = this;
-    
-    Intent intent = getIntent();
-    polyline = intent.getStringExtra("polyline");
+	// -------------------------------------------------------
+	// Instance Variables
 
-    
-    //load results from data passed to intent
-    loadPassedData( getIntent() );
-    
-   //update results count
-   TextView listResultsCount = (TextView) findViewById(R.id.listResultsCount);
-   String rcount = String.format( getString(R.string.results_count), results.size() );
-   listResultsCount.setText( rcount );
-    
-    // initialize listAdapter
-    ListResultsAdapter adapter = new ListResultsAdapter(this, results);
-    setListAdapter(adapter);
-  }
-  
-  
-  
-  //load results from intent parcel
-  protected void loadPassedData( Intent intent){
-    
-    //initialize results array
-    results = new ArrayList<Place>();
-    
-    //unpack intent parcel into results array
-    ArrayList<Place> rpack = intent.getParcelableArrayListExtra ("results");
-    for (int i = 0; i < rpack.size (); i++){
-     results.add( rpack.get(i) );
-    }
+	// misc
+	private Context mainContext;
 
-  }
+	// list config
+	private LinearLayout shown = null;
+	private int shownPos = -1;
+	ArrayList<Place> results;
 
-    
-  // -----------------------------------------------------
-  // onClick handler for list item
-  public void onListItemClick(ListView l, View v, int position, long id) {
+	// polyline
+	String polyline;
 
-    LinearLayout layout = (LinearLayout) v.findViewById(R.id.toshow);
-    layout.setVisibility(View.VISIBLE);
-    if (shown != null)
-      shown.setVisibility(View.GONE);
-    shown = layout;
-  }
-  
-  // onClick handler for map view toggle
-  public void switchToMapView(View btn){
-    
-    //create new intent to show results page
-    Intent intent = new Intent(mainContext, MapResultsActivity.class);
-    
-    //load the intent with our results data
-    ArrayList <Place> rpack = new ArrayList <Place>();
-    for (int i = 0; i < results.size(); i++)
-      rpack.add (results.get(i));
-    intent.putParcelableArrayListExtra ("results", rpack);
-    intent.putExtra("polyline", polyline);
-    
-    //show the intent
-    startActivity(intent);
-    
-  }
+	// -------------------------------------------------------
+	// onCreate
+	protected void onCreate(Bundle icicle) {
+		super.onCreate(icicle);
 
+		// initialize layout
+		setContentView(R.layout.activity_list);
 
+		// initialize instance vars
+		mainContext = this;
 
-  
+		Intent intent = getIntent();
+		polyline = intent.getStringExtra("polyline");
+
+		// load results from data passed to intent
+		loadPassedData(getIntent());
+
+		// update results count
+		TextView listResultsCount = (TextView) findViewById(R.id.listResultsCount);
+		String rcount = String.format(getString(R.string.results_count),
+				results.size());
+		listResultsCount.setText(rcount);
+
+		// initialize listAdapter
+		ListResultsAdapter adapter = new ListResultsAdapter(this, results);
+		setListAdapter(adapter);
+	}
+
+	// load results from intent parcel
+	protected void loadPassedData(Intent intent) {
+
+		// initialize results array
+		results = new ArrayList<Place>();
+
+		// unpack intent parcel into results array
+		ArrayList<Place> rpack = intent.getParcelableArrayListExtra("results");
+		for (int i = 0; i < rpack.size(); i++) {
+			results.add(rpack.get(i));
+		}
+
+	}
+
+	// -----------------------------------------------------
+	// onClick handler for list item
+	public void onListItemClick(ListView l, View v, int position, long id) {
+
+		LinearLayout layout = (LinearLayout) v.findViewById(R.id.toshow);
+		layout.setVisibility(View.VISIBLE);
+		if (shown != null)
+			shown.setVisibility(View.GONE);
+		shown = layout;
+		shownPos = position;
+	}
+
+	// onClick handler for map view toggle
+	public void switchToMapView(View btn) {
+
+		// create new intent to show results page
+		Intent intent = new Intent(mainContext, MapResultsActivity.class);
+
+		// load the intent with our results data
+		ArrayList<Place> rpack = new ArrayList<Place>();
+		for (int i = 0; i < results.size(); i++)
+			rpack.add(results.get(i));
+		intent.putParcelableArrayListExtra("results", rpack);
+		intent.putExtra("polyline", polyline);
+
+		// show the intent
+		startActivity(intent);
+
+	}
+
+	// onClick handler for clicking the directions button for a specific place
+	public void showDirections(View btn) {
+		
+		Place place = results.get(shownPos);
+		String addr = ""+place.getLatitude()+","+place.getLongitude();
+		
+		Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                Uri.parse("google.navigation:q=" + addr) );
+		startActivity(intent);
+	}
 
 }
