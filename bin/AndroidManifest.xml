@@ -7,17 +7,20 @@
     <uses-sdk
         android:minSdkVersion="16"
         android:targetSdkVersion="17" />
-
+	
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+	<uses-permission android:name="android.permission.INTERNET" />
+	
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+        <uses-library android:name="com.google.android.maps" />
         
-        
-        <!--  Main Activity -->
+        <!--  Search Activity -->
         <activity
-            android:name="com.example.enroute.MainActivity"
+            android:name="com.example.enroute.SearchActivity"
             android:label="@string/app_name" 
             android:theme="@android:style/Theme.NoTitleBar" >
             <intent-filter>
@@ -28,10 +31,19 @@
         
         <!--  Results Activity -->
         <activity
-            android:name="com.example.enroute.ResultsActivity"
+            android:name="com.example.enroute.ListResultsActivity"
             android:label="@string/title_activity_results"
-            android:parentActivityName="com.example.enroute.MainActivity"
-            android:theme="@android:style/Theme.NoTitleBar" >
+            android:parentActivityName="com.example.enroute.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.enroute.MainActivity" />
+        </activity>
+        
+        <!--  Map Activity -->
+        <activity
+            android:name="com.example.enroute.MapResultsActivity"
+            android:label="@string/title_activity_results"
+            android:parentActivityName="com.example.enroute.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.enroute.MainActivity" />

@@ -94,17 +94,18 @@ public class SearchActivity extends Activity {
       String destination = destinationInput.getText().toString();
       String query = queryInput.getText().toString();
       
+      String retVal = "";
+
       //call the main search algorithm
       SearchBase sb = new SearchBase();
-      sb.loadSearchResults( destination, query );
+      retVal = sb.loadSearchResults( destination, query );
       
       //return junk string
-      String retVal = "";
       return retVal;
     }   
     
     //after background task completes
-    protected void onPostExecute(String result) {
+    protected void onPostExecute(final String result) {
       
       //fire event back to main handler
       searchHandler.postDelayed(new Runnable() {
@@ -122,6 +123,7 @@ public class SearchActivity extends Activity {
            
            //create new intent to show results page
            Intent intent = new Intent(mainContext, ListResultsActivity.class);
+           intent.putExtra("polyline", result);
            
            //load the intent with our results data
            ArrayList <Place> rpack = new ArrayList <Place>();

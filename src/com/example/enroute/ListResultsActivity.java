@@ -41,6 +41,9 @@ public class ListResultsActivity extends ListActivity{
   private LinearLayout shown = null;
   ArrayList<Place> results;
   
+  //polyline
+  String polyline;
+  
   
   // -------------------------------------------------------
   // onCreate
@@ -52,6 +55,10 @@ public class ListResultsActivity extends ListActivity{
     
     //initialize instance vars
     mainContext = this;
+    
+    Intent intent = getIntent();
+    polyline = intent.getStringExtra("polyline");
+
     
     //load results from data passed to intent
     loadPassedData( getIntent() );
@@ -105,6 +112,7 @@ public class ListResultsActivity extends ListActivity{
     for (int i = 0; i < results.size(); i++)
       rpack.add (results.get(i));
     intent.putParcelableArrayListExtra ("results", rpack);
+    intent.putExtra("polyline", polyline);
     
     //show the intent
     startActivity(intent);

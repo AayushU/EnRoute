@@ -10,12 +10,17 @@ import com.google.android.maps.MapView;
 import com.google.android.maps.MyLocationOverlay;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
+import com.google.android.maps.Projection;
 
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
@@ -48,6 +53,10 @@ public class MapResultsActivity extends MapActivity implements LocationListener,
   //current location
   private Double curLat;
   private Double curLong;
+  
+  //polyline
+  private String polyline;
+  private Paint pathPaint = null; // Paint tool that is used to draw on the map canvas.
  
   
   //----------------------------------------------------------------
@@ -59,6 +68,10 @@ public class MapResultsActivity extends MapActivity implements LocationListener,
     
     //initialize our layout
     setContentView(R.layout.activity_map);
+    
+    //get polyline to graph results
+    Intent intent = getIntent();
+    polyline = intent.getStringExtra("polyline");
     
     //initialize instance vars
     mainContext = this;
@@ -80,6 +93,9 @@ public class MapResultsActivity extends MapActivity implements LocationListener,
     
     //load results overlays
     addPins();
+    
+    //load polyline overlay
+    drawRoute();
     
   }
   
@@ -213,6 +229,90 @@ public class MapResultsActivity extends MapActivity implements LocationListener,
     return true;
 
   }
+  
+//straight from google. decodes polyline
+private List<GeoPoint> decodePoly(String encoded) {
+
+	List<GeoPoint> poly = new ArrayList<GeoPoint>();
+	int index = 0, len = encoded.length();
+	int lat = 0, lng = 0;
+
+	while (index < len) {
+		int b, shift = 0, result = 0;
+		do {
+			b = encoded.charAt(index++) - 63;
+			result |= (b & 0x1f) << shift;
+			shift += 5;
+		} while (b >= 0x20);
+		int dlat = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
+		lat += dlat;
+
+		shift = 0;
+		result = 0;
+		do {
+			b = encoded.charAt(index++) - 63;
+			result |= (b & 0x1f) << shift;
+			shift += 5;
+		} while (b >= 0x20);
+		int dlng = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
+		lng += dlng;
+
+		GeoPoint p = new GeoPoint((int) (((double) lat / 1E5) * 1E6),
+				(int) (((double) lng / 1E5) * 1E6));
+		poly.add(p);
+	}
+
+	return poly;
+}	
+
+
+  
+  public class PolylineOverlay extends Overlay {
+      private List<GeoPoint> polyline; // Contains set of points to be connected.
+      private Paint pathPaint = null; // Paint tool that is used to draw on the map canvas.
+
+      public PolylineOverlay(String polyline) {
+              super();
+              this.polyline = decodePoly(polyline);
+              this.pathPaint = new Paint(); 
+      this.pathPaint.setAntiAlias(true); 
+      }
+      
+      /**
+       * Draws the polyline route on the map the this overlay belongs to.
+       */
+      @Override
+      public void draw(Canvas canvas, MapView mView, boolean shadow) {
+              super.draw(canvas, mView, shadow);
+              
+              // Reset our paint. 
+      this.pathPaint.setStrokeWidth(4); 
+      this.pathPaint.setARGB(100, 113, 105, 252); 
+      this.pathPaint.setStyle(Paint.Style.STROKE); 
+      
+              Projection projection = mView.getProjection();
+              Path routePath = new Path();
+              
+              // Add each point to the routePath.
+              for(GeoPoint inPoint : polyline) {
+                      Point outPoint = null;
+                      outPoint = projection.toPixels(inPoint, outPoint);
+                      routePath.lineTo(outPoint.x, outPoint.y);
+              }
+              
+              canvas.drawPath(routePath, pathPaint);
+      }
+}
+  
+  //draw polyline on the map
+  public void drawRoute(){
+	    
+	  List<Overlay> mapOverlays = mapView.getOverlays();
+	  PolylineOverlay p = new PolylineOverlay(polyline);
+	  mapOverlays.add(p);
+	  
+  }
+
 
 
   //handles onClick for GPS warning dialog
