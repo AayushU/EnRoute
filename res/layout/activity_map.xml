@@ -1,0 +1,29 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <com.google.android.maps.MapView
+        android:id="@+id/m_wbMap"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:apiKey="@string/baysMapApiKey"
+        android:clickable="true" 
+        style="@style/mapView" 
+    />
+
+     <ImageButton
+        android:id="@+id/view_toggle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="5dp"
+        android:contentDescription="@string/map_tab"
+        android:src="@drawable/list"
+        android:background="@android:drawable/btn_default"
+        android:onClick="switchToListView"
+      />   
+
+</RelativeLayout>

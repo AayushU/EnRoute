@@ -1,0 +1,97 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/map_bg"
+    tools:context=".MainActivity" >
+
+    <TextView
+        android:id="@+id/searchTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="20dp"
+        android:freezesText="true"
+        android:gravity="center"
+        android:text="@string/app_name"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#000"
+        android:textSize="19pt" />
+        
+	<TextView
+	    android:id="@+id/searchDirections"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentLeft="true"
+	    android:layout_below="@+id/searchTitle"
+	    android:layout_marginBottom="30dp"
+	    android:layout_marginLeft="50dp"
+	    android:layout_marginRight="50dp"
+	    android:layout_marginTop="20dp"
+	    android:text="@string/explanation"
+	    android:textAppearance="?android:attr/textAppearanceSmall"
+	    android:textColor="#000"
+	    android:textStyle="italic"
+	    android:typeface="normal" />
+	    
+	<View
+	    android:id="@+id/formbox"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentLeft="true"
+	    android:layout_below="@+id/searchDirections"
+	    android:layout_marginTop="0dp"
+	    android:layout_marginLeft="50dp"
+	    android:layout_marginRight="50dp"
+	    android:layout_marginBottom="80dp"
+	    android:alpha=".75"
+	    android:background="#fff" />
+        
+    <EditText
+        android:id="@+id/queryInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/searchDirections"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="60dp"
+        android:layout_marginRight="60dp"
+        android:ems="10"
+        android:hint="@string/poiPrompt"
+        android:inputType="textPostalAddress"
+        android:textColor="#000"
+        android:textColorHint="#333"
+        android:textSize="10pt" />
+    
+    <EditText
+        android:id="@+id/destinationInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/queryInput"
+        android:layout_marginLeft="60dp"
+        android:layout_marginRight="60dp"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        android:hint="@string/destinationPrompt"
+        android:inputType="textPostalAddress"
+        android:textColor="#000"
+        android:textColorHint="#333"
+        android:textSize="10pt" />
+
+    <Button
+        android:id="@+id/searchButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/destinationInput"
+        android:layout_marginTop="26dp"
+        android:layout_marginLeft="115dp"
+        android:layout_marginRight="90dp"
+        android:gravity="center"
+        android:onClick="searchOnClick"
+        android:text="@string/Search" />
+
+</RelativeLayout>

@@ -1,0 +1,45 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+   <ListView
+        android:id="@android:id/list" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" 
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="55dp">
+   </ListView>
+   
+   <TextView
+       android:id="@+id/listResultsCount"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_alignParentLeft="true"
+       android:layout_alignParentTop="true"
+       android:layout_marginLeft="16dp"
+       android:layout_marginTop="12dp"
+       android:text="@string/results_count"
+       android:textAppearance="?android:attr/textAppearanceLarge"
+       android:textColor="#DB9232"
+       android:textSize="12pt" />
+
+   <ImageButton
+        android:id="@+id/view_toggle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="5dp"
+        android:contentDescription="@string/list_tab"
+        android:src="@drawable/globe"
+        android:background="@android:drawable/btn_default"
+        android:onClick="switchToMapView"
+    />
+
+
+
+</RelativeLayout>
