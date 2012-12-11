@@ -90,9 +90,9 @@ public class MapResultsActivity extends MapActivity implements LocationListener,
     
     // initialize dummy data
     results = new ArrayList<Place>();
-    Place p1 = new Place("Zoo", "1234567890", 41313133, -72925149, " 51 Prospect Street New Haven, CT 06511", 1.5, 3 );
+    Place p1 = new Place("Zoo", "1234567890", 41313133, -72925149, "51 Prospect Street New Haven, CT 06511", 1.5, 3 );
     Place p2 = new Place("Commons", "01234567890", 41311876, -72925669, "500 College Street New Haven, CT 06511", 5, 2 );
-    Place p3 = new Place("Grove Cemetary", "1112223333", 41312972, -72928244, "  120 High Street New Haven, CT 06511", -3, 4 );
+    Place p3 = new Place("Grove Cemetary", "1112223333", 41312972, -72928244, "120 High Street New Haven, CT 06511", -3, 4 );
     results.add(p1);
     results.add(p2);
     results.add(p3);
@@ -116,8 +116,10 @@ public class MapResultsActivity extends MapActivity implements LocationListener,
       //create description text
       String desc = p.getAddress() + "\n\n" + "Distance: ";
       desc += Double.toString( p.getDistance() );
+      desc += " miles";
       desc += "\n" + "Offset: ";
       desc += Double.toString( p.getDistanceOffRoute() );
+      desc += " miles off-route";
       
       //create overlay
       OverlayItem oi = new OverlayItem(gp, p.getName(), desc);
@@ -157,6 +159,7 @@ public class MapResultsActivity extends MapActivity implements LocationListener,
     setupSelf();
 
   }
+
   
   //add an overlay for current location
   //and compass direction to the map
@@ -173,7 +176,6 @@ public class MapResultsActivity extends MapActivity implements LocationListener,
       GeoPoint gp = new GeoPoint(curLat.intValue(), curLong.intValue());
       mapController.setCenter(gp);
     }
-    
   }  
 
   

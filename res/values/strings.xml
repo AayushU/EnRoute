@@ -9,6 +9,7 @@
 	<string name="title_activity_results">Back to search</string>
 	<string name="results_count">%d Results Found</string>
 	<string name="directions">Get Directions</string>
+	<string name="cancel">Cancel</string>
 	<string name="explanation">EnRoute helps you find businesses and POI\'s along your route!</string>	
 	<string name="destinationPrompt">Destination</string>
 	<string name="poiPrompt">POI</string>
