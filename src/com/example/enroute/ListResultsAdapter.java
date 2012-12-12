@@ -39,9 +39,8 @@ public class ListResultsAdapter extends ArrayAdapter<Place> {
 			
 			//set label text
 			TextView label = (TextView) view.findViewById(R.id.resultLabel);
-			label.setText(current.getName() + " ("
-					+ current.getDistance() + " miles) "
-					+ current.getDistanceOffRoute() + " miles off route");
+			label.setText(current.getName() + " - "
+					+ current.getDistance() + "mi ahead");
 			
 			//set panel text
 			TextView name = (TextView) view.findViewById(R.id.resultName);

@@ -25,8 +25,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,7 +39,7 @@ public class ListResultsActivity extends ListActivity {
 	private Context mainContext;
 
 	// list config
-	private LinearLayout currentSelectedPanel = null;
+	private RelativeLayout currentSelectedPanel = null;
 	private int currentSelectedResult = -1;
 	ArrayList<Place> results;
 
@@ -69,6 +69,7 @@ public class ListResultsActivity extends ListActivity {
 		// initialize listAdapter
 		ListResultsAdapter adapter = new ListResultsAdapter(this, results);
 		setListAdapter(adapter);
+		
 	}
 
 	// load results from intent parcel
@@ -93,7 +94,7 @@ public class ListResultsActivity extends ListActivity {
 	public void onListItemClick(ListView l, View v, int position, long id) {
 
 	  //find panel for this list result
-		LinearLayout thisPanel = (LinearLayout) v.findViewById(R.id.resultPanel);
+		RelativeLayout thisPanel = (RelativeLayout) v.findViewById(R.id.resultPanel);
 		
 		//display the panel
 		thisPanel.setVisibility(View.VISIBLE);
