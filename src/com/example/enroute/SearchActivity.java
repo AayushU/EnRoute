@@ -2,6 +2,9 @@ package com.example.enroute;
 
 import java.util.ArrayList;
 
+import com.example.enroute.SearchBase.LocationResult;
+import com.sun.tools.javac.util.List;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,6 +30,9 @@ public class SearchActivity extends Activity {
   //Private attributes
   private EditText destinationInput;
   private EditText queryInput;
+  
+  //store pins to show on the map for specific places. 
+  ArrayList<LocationResult> places;
   
   //-------------------------------------------------------
   // onCreate
@@ -94,14 +100,19 @@ public class SearchActivity extends Activity {
       String destination = destinationInput.getText().toString();
       String query = queryInput.getText().toString();
       
-      String retVal = "";
+      String polyline = "";
 
       //call the main search algorithm
       SearchBase sb = new SearchBase();
-      retVal = sb.loadSearchResults( destination, query );
+    //  polyline = sb.loadSearchResults( destination, query );
+      //hard code for testing
+      destination = "New Haven";
+      query = "Pizza";
+      polyline = "u~b{Fhwb|LzXhRZTvBkCzCsKhFaMr@qIBqIZeJpGkWlEoB`NbDlg@|a@hYrZ`Gbi@bArSAfc@qBhQXhQpN~g@`Rrm@`IvVjIvKlOrIbLnGdMlMtf@nmAbIfRr[bf@fa@hl@bv@hsAl`@d_AzP`i@ClX{EfX_Nts@oCp^\\vTtGxa@fO~[vLjQf\\~Unn@p^bMlOjL|RbZbXhJhOdEr]fFvc@|Nrt@r[`]zJnQdDvMhCtWnEnQhGtKbQdN`_@`WjQ|\\|Tf]bRbWpDzPTrN{@th@yAzUqErXuL`a@gBpYrGfWpJpJ|V|UnEpLzW|bAzB~a@w@np@yDzV}BlPj@jTtMtj@tKh]|IlMvRvQjOpC|Ft@bQhIhQzWrF`Tn]pyAvCf_@lAno@bFnUxInNhDjF~p@ny@tLvOfFfM|K|h@`Ixd@vMfc@Cd]qDfS{DrYeDbn@pJpyBfE`aAvA~`@~@hG~f@jlAnNjv@bNng@nEhYdEl_@UpUG|Cd@tQrHn\\bRni@bPn`@jOrSd`@lf@`Mrd@lFlJxKnIfq@z_@fK~HjHbP|AvI|Ivf@bBfX|Ej\\hLb^x@xJS~P]hb@nFfTnDbGlNvLvO`NzQ`PfJnUpHnn@bGh\\tNhYjMzc@dLhj@xKpn@k@r]aAtq@tHbb@rF|OzJ`k@zI``@|Uhv@bH`J~WpR~LdTzL~k@~Qbn@zLhk@|Az]`GlW`cAlmAbh@ja@dXzY`f@fi@zKbQdCdPAfMkAx[hAzThFjTj\\vp@lZli@fCdGhIzYr@tQ}Bjf@n@~k@`BdHnIfNfHxDb]vMxMvQxGtUlCvNxF`P|IbH~KpCbl@x`@~RrJdU~GtHjD~b@ff@`M`OfWr`@xJlXpQ~Lfb@nj@~L|OpSfNrO`GbLfJvHlRpF|Fhg@`]|n@tUvRrJdJbKzC~WmChd@bBzUvJ~j@rNv`@nLnPjMvIbLlBrOw@bYyIzc@mQhKaJrHgD`\\{Dn^rEhOuDxQeC|b@c@hKgBpG~AtCzDdY~l@~CrQ|Abf@jFte@fKh`BtOn|Bz@bMzMbT`YxXn^df@rTl]dOxb@zGlYbCjC~]pS|@zFoIfVoLt_@KtEjDAlCqG|KwA`Jt@zGrFhPx[nGbGhX|NvE|ErI`R~KhDl^iIdNbFfFvEbExEfWdVrj@rg@`HvJnJlGrQhQ~}@hv@pW~IdMtCbNvGfUaDvFqA~IuIhJw@jPlEzSbJ|PdAnUtG~JbE|HdFvAtCvBz_@xDdn@`Fdi@qAtE_F~EaCu@}JsJwBuBaFtL_KpXnJtH";
       
-      //return junk string
-      return retVal;
+      places = sb.loadLocationResult(destination, query, polyline);
+      
+      return polyline;
     }   
     
     //after background task completes
