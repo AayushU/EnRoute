@@ -5,7 +5,7 @@
     android:orientation="vertical" >
 
     <TextView
-        android:id="@+id/label"
+        android:id="@+id/resultLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@+id/label"
@@ -13,35 +13,35 @@
     </TextView>
 
     <LinearLayout
-        android:id="@+id/toshow"
+        android:id="@+id/resultPanel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:visibility="gone" >
 
         <TextView
-            android:id="@+id/label2"
+            android:id="@+id/resultName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@+id/label2"
             android:textSize="30px" />
 
         <TextView
-            android:id="@+id/label3"
+            android:id="@+id/resultDistance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@+id/label3"
             android:textSize="30px" />
 
         <TextView
-            android:id="@+id/label4"
+            android:id="@+id/resultOffRoute"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@+id/label4"
             android:textSize="30px" />
 
         <TextView
-            android:id="@+id/label5"
+            android:id="@+id/resultPhone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@+id/label5"

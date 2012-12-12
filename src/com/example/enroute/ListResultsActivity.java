@@ -39,8 +39,8 @@ public class ListResultsActivity extends ListActivity {
 	private Context mainContext;
 
 	// list config
-	private LinearLayout shown = null;
-	private int shownPos = -1;
+	private LinearLayout currentSelectedPanel = null;
+	private int currentSelectedResult = -1;
 	ArrayList<Place> results;
 
 	// polyline
@@ -92,12 +92,19 @@ public class ListResultsActivity extends ListActivity {
 	// onClick handler for list item
 	public void onListItemClick(ListView l, View v, int position, long id) {
 
-		LinearLayout layout = (LinearLayout) v.findViewById(R.id.toshow);
-		layout.setVisibility(View.VISIBLE);
-		if (shown != null)
-			shown.setVisibility(View.GONE);
-		shown = layout;
-		shownPos = position;
+	  //find panel for this list result
+		LinearLayout thisPanel = (LinearLayout) v.findViewById(R.id.resultPanel);
+		
+		//display the panel
+		thisPanel.setVisibility(View.VISIBLE);
+		
+		//hide the old panel
+		if (currentSelectedPanel != null)
+			currentSelectedPanel.setVisibility(View.GONE);
+		
+		//update instance vars
+		currentSelectedPanel = thisPanel;
+		currentSelectedResult = position;
 	}
 
 	// onClick handler for map view toggle
@@ -120,14 +127,21 @@ public class ListResultsActivity extends ListActivity {
 
 	}
 
+	
 	// onClick handler for clicking the directions button for a specific place
 	public void showDirections(View btn) {
 		
-		Place place = results.get(shownPos);
+	  //get current selected result
+		Place place = results.get(currentSelectedResult);
+		
+		//get address 
 		String addr = ""+place.getLatitude()+","+place.getLongitude();
 		
+		//create intent to show navigation for that result
 		Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
                 Uri.parse("google.navigation:q=" + addr) );
+		
+		//start intent
 		startActivity(intent);
 	}
 
