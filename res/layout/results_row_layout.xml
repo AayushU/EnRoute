@@ -8,54 +8,114 @@
         android:id="@+id/resultLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@+id/label"
-        android:textSize="30px" >
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="4dp"
+        android:text="Starbucks - 3.5mi ahead"
+        android:textSize="20dp" >
+
     </TextView>
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/resultPanel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:animateLayoutChanges="false"
         android:orientation="vertical"
-        android:visibility="gone" >
-
+        android:visibility="gone" 
+        >
+		
         <TextView
             android:id="@+id/resultName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@+id/label2"
-            android:textSize="30px" />
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="6dp"
+            android:text="Starbucks"
+            android:textColor="#DB9232"
+            android:textSize="17dp" />
+        
+        <ImageView
+            android:id="@+id/defaultPlaceIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/resultName"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="8dp"
+            android:adjustViewBounds="true"
+            android:maxHeight="120px"
+            android:maxWidth="120px"
+            android:scaleType="fitXY"
+            android:src="@drawable/place" />
 
         <TextView
             android:id="@+id/resultDistance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@+id/label3"
-            android:textSize="30px" />
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/resultName"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="4dp"
+            android:text="3.5mi ahead"
+            android:textSize="17dp" />
 
         <TextView
             android:id="@+id/resultOffRoute"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@+id/label4"
-            android:textSize="30px" />
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/resultDistance"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="0dp"
+            android:text="1.3mi off-route"
+            android:textSize="17dp" />
 
         <TextView
             android:id="@+id/resultPhone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@+id/label5"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/resultOffRoute"
+            android:layout_marginLeft="33dp"
+            android:layout_marginTop="6dp"
             android:autoLink="all"
-            android:textSize="30px" />
+            android:text="203 941 7017"
+            android:textSize="17dp" />
 
-        <Button
-            android:id="@+id/directions_button"
+        <ImageView
+            android:id="@+id/imageView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="right"
-            android:text="@string/directions"
-            android:onClick="showDirections" >
-        </Button>
-    </LinearLayout>
-
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/resultOffRoute"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="5dp"
+            android:adjustViewBounds="true"
+            android:maxHeight="40px"
+            android:scaleType="fitXY"
+            android:src="@drawable/phone" />
+        
+         <Button
+	        android:id="@+id/directions_button"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:layout_below="@+id/resultPhone"  
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"	        
+	        android:onClick="showDirections"
+	        android:text="@string/directions" />
+        
+       	<View
+    		android:layout_width="fill_parent"
+    		android:layout_height="1dip"
+   			android:background="#EEE" 
+   			android:layout_alignParentLeft="true"
+	        android:layout_below="@+id/directions_button"  
+	        android:layout_marginTop="5dp"	
+	        />
+       	
+    </RelativeLayout>
 </LinearLayout>
