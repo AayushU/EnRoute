@@ -63,7 +63,7 @@ public class SearchBase {
 
   //-------------------------------------------------------
   // instance variables
-	private static final String API_KEY = "AIzaSyBoRZcwm_ad2YpAdLlA6XKn8m8Gjae9B0E";
+	private static final String API_KEY = Constants.AAYUSH_API_KEY;
 	private static final String PLACES_URL = "https://maps.googleapis.com/maps/api/place/textsearch/json?";
 	private static final String DIRECTION_URL = "https://maps.googleapis.com/maps/api/directions/json?";
 	
@@ -371,11 +371,21 @@ public class SearchBase {
 		  }
 
 		  return poly;
-		}
-	
+	}
   
+  
+  public ArrayList<Place> genFakePlaces() {
+    ArrayList<Place> results = new ArrayList<Place>();
+      Place p1 = new Place("Zoo", "1234567890", 41313133, -72925149, "51 Prospect Street New Haven, CT 06511", 1.5, 3 );
+      Place p2 = new Place("Commons", "01234567890", 41311876, -72925669, "500 College Street New Haven, CT 06511", 5, 2 );
+      Place p3 = new Place("Grove Cemetary", "1112223333", 41312972, -72928244, "120 High Street New Haven, CT 06511", -3, 4 );
+      results.add(p1);
+      results.add(p2);
+      results.add(p3);
+      
+      return results;
+  }
   //-------------------------------------------------------
   // private auxiliary functions
-  
   
 }

@@ -179,7 +179,7 @@ public class MapResultsActivity extends MapActivity implements LocationListener,
 
     //setup map defaults
     mapView.setBuiltInZoomControls(true);
-    mapController.setCenter(Constants.COMMONS);
+    mapController.setCenter(Constants.NH_GREEN);
     mapController.setZoom(Constants.DEFAULT_ZOOM);
     
     //display current location

@@ -34,6 +34,9 @@ public class SearchActivity extends Activity {
   //store pins to show on the map for specific places. 
   ArrayList<Place> places = new ArrayList<Place>();
   
+  //store our polyline for displaying route
+  String polyline;
+  
   //-------------------------------------------------------
   // onCreate
 	@Override
@@ -99,16 +102,16 @@ public class SearchActivity extends Activity {
       //get values from UI
       String destination = destinationInput.getText().toString();
       String query = queryInput.getText().toString();
-      
-      String polyline = "";
 
       //call the main search algorithm
-      SearchBase sb = new SearchBase();
-    //  polyline = sb.loadSearchResults( destination, query );
+//      SearchBase sb = new SearchBase();
+//      polyline = sb.loadSearchResults( destination, query );
+//      places = sb.loadLocationResult(destination, query, polyline);     
       
-      /* 
+      
+      /****************************************************************************
        * DEMO COMMENT BLOCK
-       */
+       ****************************************************************************/
       
       destination = "Hartford";
       query = "Starbucks";
@@ -148,26 +151,26 @@ public class SearchActivity extends Activity {
       places.add(p5);
       places.add(p6);
       places.add(p7);
-
-     // places = sb.loadLocationResult(destination, query, polyline);
       
+      /****************************************************************************
+       * END DEMO BLOCK
+       ****************************************************************************/
       
-      return polyline;
+      return "";
     }   
     
     //after background task completes
-    protected void onPostExecute(final String polylineResult) {
+    protected void onPostExecute(final String trash) {
       
       //fire event back to main handler
       searchHandler.postDelayed(new Runnable() {
          public void run() {
            
-           
            //create new intent to show results page
            Intent intent = new Intent(mainContext, ListResultsActivity.class);
            
            //load intent with our polyline
-           intent.putExtra("polyline", polylineResult);
+           intent.putExtra("polyline", polyline);
            
            //load the intent with our results data
            ArrayList <Place> rpack = new ArrayList <Place>();
@@ -184,18 +187,7 @@ public class SearchActivity extends Activity {
       }, 0);  //0ms 
 
     }
-    
-    public ArrayList<Place> genFakePlaces() {
-    	ArrayList<Place> results = new ArrayList<Place>();
-        Place p1 = new Place("Zoo", "1234567890", 41313133, -72925149, "51 Prospect Street New Haven, CT 06511", 1.5, 3 );
-        Place p2 = new Place("Commons", "01234567890", 41311876, -72925669, "500 College Street New Haven, CT 06511", 5, 2 );
-        Place p3 = new Place("Grove Cemetary", "1112223333", 41312972, -72928244, "120 High Street New Haven, CT 06511", -3, 4 );
-        results.add(p1);
-        results.add(p2);
-        results.add(p3);
-        
-        return results;
-    }
+
   }
   
 

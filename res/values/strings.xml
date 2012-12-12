@@ -13,6 +13,7 @@
 	<string name="explanation">EnRoute helps you find businesses and POI\'s along your route!</string>	
 	<string name="destinationPrompt">Destination</string>
 	<string name="poiPrompt">POI</string>
-	<string name="baysMapApiKey">0UQC4O49bTWiUFcwWual-rDGrH03_Cy6yTbP9nA</string>
+	<string name="bayAPIkey">0UQC4O49bTWiUFcwWual-rDGrH03_Cy6yTbP9nA</string>
+	<string name="aayushAPIkey">AIzaSyBoRZcwm_ad2YpAdLlA6XKn8m8Gjae9B0E</string>
 
 </resources>

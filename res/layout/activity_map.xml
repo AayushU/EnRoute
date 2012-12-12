@@ -7,7 +7,7 @@
         android:id="@+id/m_wbMap"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:apiKey="@string/baysMapApiKey"
+        android:apiKey="@string/bayAPIkey"
         android:clickable="true" 
         style="@style/mapView" 
     />
