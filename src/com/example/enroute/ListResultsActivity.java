@@ -57,9 +57,6 @@ public class ListResultsActivity extends ListActivity {
 		// initialize instance vars
 		mainContext = this;
 
-		Intent intent = getIntent();
-		polyline = intent.getStringExtra("polyline");
-
 		// load results from data passed to intent
 		loadPassedData(getIntent());
 
@@ -85,6 +82,9 @@ public class ListResultsActivity extends ListActivity {
 		for (int i = 0; i < rpack.size(); i++) {
 			results.add(rpack.get(i));
 		}
+		
+    //get polyline to graph results
+    polyline = intent.getStringExtra("polyline");
 
 	}
 
@@ -111,6 +111,8 @@ public class ListResultsActivity extends ListActivity {
 		for (int i = 0; i < results.size(); i++)
 			rpack.add(results.get(i));
 		intent.putParcelableArrayListExtra("results", rpack);
+		
+		//load the intent with our polyline
 		intent.putExtra("polyline", polyline);
 
 		// show the intent

@@ -69,10 +69,6 @@ public class MapResultsActivity extends MapActivity implements LocationListener,
     //initialize our layout
     setContentView(R.layout.activity_map);
     
-    //get polyline to graph results
-    Intent intent = getIntent();
-    polyline = intent.getStringExtra("polyline");
-    
     //initialize instance vars
     mainContext = this;
     curLat = 0.0;
@@ -110,6 +106,9 @@ public class MapResultsActivity extends MapActivity implements LocationListener,
     for (int i = 0; i < rpack.size (); i++){
      results.add( rpack.get(i) );
     }
+    
+    //get polyline to graph results
+    polyline = intent.getStringExtra("polyline");
 
   }
   
@@ -157,6 +156,9 @@ public class MapResultsActivity extends MapActivity implements LocationListener,
     for (int i = 0; i < results.size(); i++)
       rpack.add (results.get(i));
     intent.putParcelableArrayListExtra ("results", rpack);
+    
+    //load the intent with our polyline
+    intent.putExtra("polyline", polyline);
     
     //show the intent
     startActivity(intent);

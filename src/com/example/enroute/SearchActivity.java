@@ -116,7 +116,7 @@ public class SearchActivity extends Activity {
     }   
     
     //after background task completes
-    protected void onPostExecute(final String result) {
+    protected void onPostExecute(final String polylineResult) {
       
       //fire event back to main handler
       searchHandler.postDelayed(new Runnable() {
@@ -134,7 +134,9 @@ public class SearchActivity extends Activity {
            
            //create new intent to show results page
            Intent intent = new Intent(mainContext, ListResultsActivity.class);
-           intent.putExtra("polyline", result);
+           
+           //load intent with our polyline
+           intent.putExtra("polyline", polylineResult);
            
            //load the intent with our results data
            ArrayList <Place> rpack = new ArrayList <Place>();
