@@ -86,7 +86,7 @@ public class SearchBase {
   public String loadSearchResults( String destination, String query) {
 	  
 	  //TODO: Get current location from location manager, format properly
-	  String directionReq = DIRECTION_URL + "origin=New+Haven,CT&destination=New+York,NY" + "&sensor=true";    
+	  String directionReq = DIRECTION_URL + "origin=New+Haven,CT&destination=Hartford,CT" + "&sensor=true";    
 	  
 	  AsyncTask mySearch = new myGoogleSearch();
 	  String retVal = "";
@@ -109,7 +109,7 @@ public class SearchBase {
 	  
 	  //Google Maps is smart enough to use both location and place description
 	  //to find places. So we just concatenate them. 
-	  String mapsQuery = "query=" + (destination + " " + query).replace(' ','+');
+	  String mapsQuery = "query=" + query; //+ (destination + " " + query).replace(' ','+');
 	  
 	  List<GeoPoint> routePoints = decodePoly(polyline);
 	  ArrayList<LocationResult> locList = new ArrayList<LocationResult>();

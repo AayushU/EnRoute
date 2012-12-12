@@ -32,7 +32,7 @@ public class SearchActivity extends Activity {
   private EditText queryInput;
   
   //store pins to show on the map for specific places. 
-  ArrayList<LocationResult> places;
+  ArrayList<Place> places = new ArrayList<Place>();
   
   //-------------------------------------------------------
   // onCreate
@@ -105,12 +105,52 @@ public class SearchActivity extends Activity {
       //call the main search algorithm
       SearchBase sb = new SearchBase();
     //  polyline = sb.loadSearchResults( destination, query );
-      //hard code for testing
-      destination = "New Haven";
-      query = "Pizza";
-      polyline = "u~b{Fhwb|LzXhRZTvBkCzCsKhFaMr@qIBqIZeJpGkWlEoB`NbDlg@|a@hYrZ`Gbi@bArSAfc@qBhQXhQpN~g@`Rrm@`IvVjIvKlOrIbLnGdMlMtf@nmAbIfRr[bf@fa@hl@bv@hsAl`@d_AzP`i@ClX{EfX_Nts@oCp^\\vTtGxa@fO~[vLjQf\\~Unn@p^bMlOjL|RbZbXhJhOdEr]fFvc@|Nrt@r[`]zJnQdDvMhCtWnEnQhGtKbQdN`_@`WjQ|\\|Tf]bRbWpDzPTrN{@th@yAzUqErXuL`a@gBpYrGfWpJpJ|V|UnEpLzW|bAzB~a@w@np@yDzV}BlPj@jTtMtj@tKh]|IlMvRvQjOpC|Ft@bQhIhQzWrF`Tn]pyAvCf_@lAno@bFnUxInNhDjF~p@ny@tLvOfFfM|K|h@`Ixd@vMfc@Cd]qDfS{DrYeDbn@pJpyBfE`aAvA~`@~@hG~f@jlAnNjv@bNng@nEhYdEl_@UpUG|Cd@tQrHn\\bRni@bPn`@jOrSd`@lf@`Mrd@lFlJxKnIfq@z_@fK~HjHbP|AvI|Ivf@bBfX|Ej\\hLb^x@xJS~P]hb@nFfTnDbGlNvLvO`NzQ`PfJnUpHnn@bGh\\tNhYjMzc@dLhj@xKpn@k@r]aAtq@tHbb@rF|OzJ`k@zI``@|Uhv@bH`J~WpR~LdTzL~k@~Qbn@zLhk@|Az]`GlW`cAlmAbh@ja@dXzY`f@fi@zKbQdCdPAfMkAx[hAzThFjTj\\vp@lZli@fCdGhIzYr@tQ}Bjf@n@~k@`BdHnIfNfHxDb]vMxMvQxGtUlCvNxF`P|IbH~KpCbl@x`@~RrJdU~GtHjD~b@ff@`M`OfWr`@xJlXpQ~Lfb@nj@~L|OpSfNrO`GbLfJvHlRpF|Fhg@`]|n@tUvRrJdJbKzC~WmChd@bBzUvJ~j@rNv`@nLnPjMvIbLlBrOw@bYyIzc@mQhKaJrHgD`\\{Dn^rEhOuDxQeC|b@c@hKgBpG~AtCzDdY~l@~CrQ|Abf@jFte@fKh`BtOn|Bz@bMzMbT`YxXn^df@rTl]dOxb@zGlYbCjC~]pS|@zFoIfVoLt_@KtEjDAlCqG|KwA`Jt@zGrFhPx[nGbGhX|NvE|ErI`R~KhDl^iIdNbFfFvEbExEfWdVrj@rg@`HvJnJlGrQhQ~}@hv@pW~IdMtCbNvGfUaDvFqA~IuIhJw@jPlEzSbJ|PdAnUtG~JbE|HdFvAtCvBz_@xDdn@`Fdi@qAtE_F~EaCu@}JsJwBuBaFtL_KpXnJtH";
       
-      places = sb.loadLocationResult(destination, query, polyline);
+      /* 
+       * DEMO COMMENT BLOCK
+       */
+      
+      destination = "Hartford";
+      query = "Starbucks";
+      polyline = "u~b{Fhwb|LqGkEtJmZtBcHEc@{E_DwEaE{BoCYWgCoETe@FiAYuCeCgJy@_NSoAi@w@e@Uw@CuBKcAg@[[qDcHg@q@wJsVuAuD_EgMo@mI[}NMcC?m@o@qDeDyOWcA}CwN_DkNsDaL}AmDiAiBiFuHiEuEeHcFwOqHkFoCm[eQwN}JuX}RwFgDuEkBaGuAoE_A{NyCiGm@}BAwADmOpAsIrAiGE{Qe@_Hb@mHfAoLlBaJzAuCTeCFwGAmHe@{Pe@eBIiIs@mDo@kAUiWoHaDeAuB]}M}AoXeDqFq@cEq@iFiBaCgAyFyDyDmDsE{F}CqFmDwImB{Gu@oDqBmRsF}r@g@mF_AiGsAaGyD}K_DqGkCyD{DiEgC}BcEeCiGwCqL_E{[iLcNcFsE_CmKyH}DkDiJoIyC}CgFqH}D_IeCaGeJwZaNuc@cFcMuA_DwHeNkAsBwH}M_FcIcHaJ}LyLwc@qb@{`@}_@kLoL{DkDqHcFcHcDcIkCaMsDm~@aXyw@iU}IoC_NcDoGy@gKs@sMG{FVy\\hCcj@hEoI^ma@l@_FTaj@zGaCl@wDh@_CPmDKoDk@yU_EkXuE{FiAsCaAiCaBuAaA_CiCyCiFgF{J_D_GuCwF_@q@gDcGaD_HiS}`@w@sAoAsBsCoFqC}DaEwEsIoGaH{CcIyEwScJ_MoGaGmDeCkBcE}DeKoMaS{a@{E{IyLkSmGmHsFiGqHcH{IsHah@}\\sSoPmBmAmEgDoFaDiGgCmI{BwX_FwJ{AyLcC}E_B{GkDkXwOwWiOaXkOoLkG}EkB{O}HiMsHoFyDkCqBkUeRq@k@}LaIgIyCeMwDeQmGcF_DwG_Fs_@e_@aA}@mE{EmIwH_EwBsE{BoCaA_FmAkEw@q[cEeHeAsCi@gEmAiDkAcOsFeFeC}P{Kgc@sZuLkIkEsDmE}DgMqMeHoGoC{Bc@_@kVcLgMqFo_Acb@sGeBmEm@iBOcC@aF^oFv@uKxAeWtDwAZ_HtBuGtCuHdDgCjAsL|EiIzBgTbDeDj@{BdA_DfBgDbD}EvG{HfKyLdSaKzPaDzCaClByBjAa@R{DtAoCj@{FLcIk@gDw@kNsDmFgBaDqAgDsBuB}AoEmDaJyGsF{BqB_@{BUwGDeCVyBf@mBr@eBz@o@j@gBhBuLlN}@~AqHrHiGpF}@|A[pAk@zH}@pCcA~EW~BeAxL_BlLu@fDq@v@{@Fa@VO^?z@P^ZPn@Dl@a@j@C|BbArAh@}@jFeDjQc@|BiBbNg@xE}@A";      
+      //[32] = 41.319330,-72.893260
+      Place p1 = new Place("Starbucks", "1234567890", 41319330, -72893260, 
+    		  "1068-1070 Chapel Street, New Haven, CT, United States", 1.5, 3);
+      
+      //[64] = 41.368030,-72.869630
+      Place p2 = new Place("Starbucks", "0123456789", 41368030, -72869630, 
+    		  "200 Universal Drive North, North Haven, CT, United States", 3, 2);
+      
+      //[120] = 41.440440,-72.794350
+      Place p3 = new Place("Starbucks", "4567890123", 41440440,-72794350, 
+    		  "166 Washington Avenue, North Haven, CT, United States", 12, 2);
+      
+      //[198] = 41.611950,-72.698720
+      Place p4 = new Place("Starbucks", "7890123456", 41611950, -72698720, 
+    		  "412 Cromwell Avenue, Rocky Hill, CT, United States", 24, 5);
+      
+      //[222] = 41.653570,-72.677720
+      Place p5 = new Place("Starbucks", "7890123456", 41653570,-72677720, 
+    		  "1090 Silas Deane Highway, Wethersfield, CT, United States", 28, 3);
+      
+      //[280] = 41.747720,-72.658880
+      Place p6 = new Place("Starbucks", "9012345678", 41747720,-72658880, 
+    		  "185 Asylum Street, Hartford, CT, United States", 37, 3);
+      
+      //[320] = 41.763410,-72.685300
+      Place p7 = new Place("Starbucks", "9012345678", 41763410,-72685300, 
+    		  "200 Columbus Blvd, Hartford, CT, United States", 39, 3);
+      
+      places.add(p1);
+      places.add(p2);
+      places.add(p3);
+      places.add(p4);
+      places.add(p5);
+      places.add(p6);
+      places.add(p7);
+
+     // places = sb.loadLocationResult(destination, query, polyline);
+      
       
       return polyline;
     }   
@@ -122,15 +162,6 @@ public class SearchActivity extends Activity {
       searchHandler.postDelayed(new Runnable() {
          public void run() {
            
-           //TODO: this should obviously be real results data from SearchBase job
-           //generate dummy results data
-           ArrayList<Place> results = new ArrayList<Place>();
-           Place p1 = new Place("Zoo", "1234567890", 41313133, -72925149, "51 Prospect Street New Haven, CT 06511", 1.5, 3 );
-           Place p2 = new Place("Commons", "01234567890", 41311876, -72925669, "500 College Street New Haven, CT 06511", 5, 2 );
-           Place p3 = new Place("Grove Cemetary", "1112223333", 41312972, -72928244, "120 High Street New Haven, CT 06511", -3, 4 );
-           results.add(p1);
-           results.add(p2);
-           results.add(p3);
            
            //create new intent to show results page
            Intent intent = new Intent(mainContext, ListResultsActivity.class);
@@ -140,8 +171,8 @@ public class SearchActivity extends Activity {
            
            //load the intent with our results data
            ArrayList <Place> rpack = new ArrayList <Place>();
-           for (int i = 0; i < results.size(); i++)
-             rpack.add (results.get(i));
+           for (int i = 0; i < places.size(); i++)
+             rpack.add (places.get(i));
            intent.putParcelableArrayListExtra ("results", rpack);
            
            //show the intent
@@ -153,7 +184,21 @@ public class SearchActivity extends Activity {
       }, 0);  //0ms 
 
     }
+    
+    public ArrayList<Place> genFakePlaces() {
+    	ArrayList<Place> results = new ArrayList<Place>();
+        Place p1 = new Place("Zoo", "1234567890", 41313133, -72925149, "51 Prospect Street New Haven, CT 06511", 1.5, 3 );
+        Place p2 = new Place("Commons", "01234567890", 41311876, -72925669, "500 College Street New Haven, CT 06511", 5, 2 );
+        Place p3 = new Place("Grove Cemetary", "1112223333", 41312972, -72928244, "120 High Street New Haven, CT 06511", -3, 4 );
+        results.add(p1);
+        results.add(p2);
+        results.add(p3);
+        
+        return results;
+    }
   }
+  
+
 	  
 
 }
