@@ -1,7 +1,6 @@
 /*
  *   public class for managing our main search algorithm
  * 
- * 
  */
 package com.example.enroute;
 
@@ -9,36 +8,21 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.InetAddress;
 import java.net.MalformedURLException;
-import java.net.Socket;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.net.UnknownHostException;
-import java.security.KeyManagementException;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
-import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
+
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
@@ -52,11 +36,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.google.android.maps.GeoPoint;
-import com.sun.org.apache.xerces.internal.util.URI;
 
-import android.os.AsyncTask;
 import android.util.Log;
-import android.view.View;
 
 
 public class SearchBase {
@@ -67,6 +48,7 @@ public class SearchBase {
 	private static final String PLACES_URL = "https://maps.googleapis.com/maps/api/place/textsearch/json?";
 	private static final String DIRECTION_URL = "https://maps.googleapis.com/maps/api/directions/json?";
 	
+	//The list of special "place" points on our route
 	List<GeoPoint> routePoints;
 
   //-------------------------------------------------------
@@ -86,15 +68,12 @@ public class SearchBase {
   public String loadSearchResults( String destination, String query) {
 	  
 	  //TODO: Get current location from location manager, format properly
-	  String directionReq = DIRECTION_URL + "origin=New+Haven,CT&destination=Hartford,CT" + "&sensor=true";    
+	  String directionReq = DIRECTION_URL + "origin=New+Haven,CT&destination=" + destination + "&sensor=true";    
 	  
-	  AsyncTask mySearch = new myGoogleSearch();
 	  String retVal = "";
 	  
 	  try{
-			//mySearch.execute(directionReq);
-			//block until it finishes, then updates the list of lat/lng in order
-			String result = searchRequest(directionReq); //mySearch.get().toString();
+			String result = searchRequest(directionReq); 
 			retVal = processDirectionResponse(result);
 			
 		}catch(Exception e){
@@ -105,39 +84,58 @@ public class SearchBase {
 	  
   }
   
-  public ArrayList<LocationResult> loadLocationResult (String destination, String query, String polyline) {
+  /*-------------------------------------------------------
+   * Auxiliary search function to find places along a route
+   * @destination - A string entered by the user which is the
+   * desired destination. 
+   * 
+   * @query - The place/type of food searched for. 
+   * 
+   * @polyline - A Google API polyline which represents the route, found by loadSearchResults
+   */
+  
+  public ArrayList<Place> loadLocationResult (String destination, String query, String polyline) {
 	  
 	  //Google Maps is smart enough to use both location and place description
 	  //to find places. So we just concatenate them. 
-	  String mapsQuery = "query=" + query; //+ (destination + " " + query).replace(' ','+');
+	  String mapsQuery = "query=" + query; 
 	  
 	  List<GeoPoint> routePoints = decodePoly(polyline);
-	  ArrayList<LocationResult> locList = new ArrayList<LocationResult>();
+	  ArrayList<Place> locList = new ArrayList<Place>();
 	  
+	  //Check at these points along the route for our POI's.
 	  List<GeoPoint> testPoints = new ArrayList<GeoPoint>();
 	  
 	  int routeLen = routePoints.size();
 	  
-	  GeoPoint q1 = routePoints.get(routeLen/4);
-	  GeoPoint q2 = routePoints.get(routeLen/2);
-	  GeoPoint q3 = routePoints.get(routeLen*3/4);
+	  GeoPoint q1 = routePoints.get(routeLen/10);
+	  GeoPoint q2 = routePoints.get(routeLen/9);
+	  GeoPoint q3 = routePoints.get(routeLen/8);
+	  GeoPoint q4 = routePoints.get(routeLen/3);
+	  GeoPoint q5 = routePoints.get(routeLen/2);
+	  GeoPoint q6 = routePoints.get(routeLen*4/5);
+	  GeoPoint q7 = routePoints.get(routeLen*5/6);
 	  
 	  testPoints.add(q1);
 	  testPoints.add(q2);
 	  testPoints.add(q3);
+	  testPoints.add(q4);
+	  testPoints.add(q5);
+	  testPoints.add(q6);
+	  testPoints.add(q7);
 	  
 	  for (GeoPoint p : testPoints) {
 
 		  double lat = ((double)p.getLatitudeE6())/1000000.0;
 		  double lng = ((double)p.getLongitudeE6())/1000000.0;
 
-		  //hard code the radius to 5, limit to first result
 		  String location = "&location=" + String.valueOf(lat) + "," + String.valueOf(lng) + "&radius=5";
 
-		  //find one place close to our query 1/4th of the way into the map. 
+		  //The actual Places API query
 		  String locReq= PLACES_URL + mapsQuery + "&sensor=true&key=" + API_KEY + location;
 
 		  try{
+			  
 			  String result = searchRequest(locReq); 
 
 			  //block until it finishes, then updates the list of lat/lng in order
@@ -152,25 +150,16 @@ public class SearchBase {
 	 return locList;
   }
   
-  public class LocationResult {
-	  
-	  	//These are actually microdegrees, so divide by 1,000,000 to get the decimal lat/lng
-		public double lat, lng;
-		public String name, address;
-
-		public LocationResult(double i, double j, String n, String a) {
-		
-			lat = i;
-			lng = j;
-			name = n;
-			address = a;
-		}
-	}
+  /*-------------------------------------------------------
+   * Given response for a place query, we find the first place returned
+   * @resp - The result of an HTTP Get for a specific POI 
+   * 
+   * @polyline - A Google API polyline which represents the route, found by loadSearchResults
+   */
   
-  public LocationResult processPlaceResponse(String resp) throws IllegalStateException, 
+  public Place processPlaceResponse(String resp) throws IllegalStateException, 
 		IOException, JSONException, NoSuchAlgorithmException {
 	  
-		Log.v("gsearch","gsearch result:"+resp);
 		JSONObject mResponseObject = new JSONObject(resp);
 		JSONArray results = mResponseObject.getJSONArray("results");
 		JSONObject firstResult = results.getJSONObject(0);
@@ -179,104 +168,106 @@ public class SearchBase {
 		
 		String address = firstResult.getString("formatted_address");
 		String name = firstResult.getString("name");
-		double lat = location.getDouble("lat");
-		double lng = location.getDouble("lng");
+		int lat = (int)(location.getDouble("lat")*1000000);
+		int lng = (int)(location.getDouble("lng")*1000000);
 		
-	  return new LocationResult(lat,lng,name,address);
+	  return new Place(name, "", lat,lng,address, 2,2);
   }
   
+  /*-------------------------------------------------------
+   * Given response for a destination query, we return the polyline
+   * @resp - The result of an HTTP Get for a specific destination
+   * 
+   */
+  public String processDirectionResponse(String resp) throws IllegalStateException, 
+	IOException, JSONException, NoSuchAlgorithmException {
+		
+		Log.v("gsearch","gsearch result:"+resp);
+		JSONObject mResponseObject = new JSONObject(resp);
+		JSONArray routes = mResponseObject.getJSONArray("routes");
+		JSONObject routeFirst = routes.getJSONObject(0);
+		JSONObject polyline = routeFirst.getJSONObject("overview_polyline");
+		String result = polyline.getString("points");
+		return result;
+		
+	}
+  
+  
+  /*-------------------------------------------------------
+   * Executes an HTTP request to get information from a given API query
+   * @searchURL - The URL with parameters of the maps/places API request. 
+   * 
+   */
   public String searchRequest(String searchURL) throws MalformedURLException, IOException  {
 
-		//StringBuilder response = new StringBuilder();
-	    String resultList = null;
-		Log.v("gsearch","gsearch url:"+searchURL);
-		URL url = new URL(searchURL);
 		String retVal = "";
-	  
-         
 		HttpGet httpGet = new HttpGet(searchURL);
 		HttpParams httpParameters = new BasicHttpParams();
+		
 		// Set the timeout in milliseconds until a connection is established.
 		// The default value is zero, that means the timeout is not used. 
 		int timeoutConnection = 3000;
 		HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
+		
 		// Set the default socket timeout (SO_TIMEOUT) 
 		// in milliseconds which is the timeout for waiting for data.
 		int timeoutSocket = 5000;
 		HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
 
+		//we use a SSL Client class to avoid getting Certificate denied errors from Google
 		HttpClient httpClient = sslClient(new DefaultHttpClient(httpParameters));
 		HttpResponse response = httpClient.execute(httpGet);
 		
+		//Convert the reply into a parseable string
 		retVal = inputStreamToString(response.getEntity().getContent());
-		
 		
 	    return retVal; 
 	}
   
+  /*-------------------------------------------------------
+   * Converts an HttpClient into a special HttpClient with a blind certificate to avoid SSL errors.
+   * Gotten from StackOverflow.  
+   * @client - an existing HttpClient
+   * 
+   */
   private HttpClient sslClient(HttpClient client) {
-	    try {
-	        X509TrustManager tm = new X509TrustManager() { 
-	            public void checkClientTrusted(X509Certificate[] xcs, String string) throws CertificateException {
-	            }
+	  try {
+		  X509TrustManager tm = new X509TrustManager() { 
+			  public void checkClientTrusted(X509Certificate[] xcs, String string) throws CertificateException {
+			  }
 
-	            public void checkServerTrusted(X509Certificate[] xcs, String string) throws CertificateException {
-	            }
+			  public void checkServerTrusted(X509Certificate[] xcs, String string) throws CertificateException {
+			  }
 
-	            public X509Certificate[] getAcceptedIssuers() {
-	                return null;
-	            }
+			  public X509Certificate[] getAcceptedIssuers() {
+				  return null;
+			  }
 
-	        };
-	        SSLContext ctx = SSLContext.getInstance("TLS");
-	        ctx.init(null, new TrustManager[]{tm}, null);
-	        SSLSocketFactory ssf = new MySSLSocketFactory(ctx);
-	        ssf.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
-	        ClientConnectionManager ccm = client.getConnectionManager();
-	        SchemeRegistry sr = ccm.getSchemeRegistry();
-	        sr.register(new Scheme("https", ssf, 443));
-	        return new DefaultHttpClient(ccm, client.getParams());
-	    } catch (Exception ex) {
-	        return null;
-	    }
-	}
-  
-  public class MySSLSocketFactory extends SSLSocketFactory {
-	     SSLContext sslContext = SSLContext.getInstance("TLS");
+		  };
+		  
+		  SSLContext ctx = SSLContext.getInstance("TLS");
+		  ctx.init(null, new TrustManager[]{tm}, null);
+		  
+		  SSLSocketFactory ssf = new MySSLSocketFactory(ctx);
+		  ssf.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+		  
+		  ClientConnectionManager ccm = client.getConnectionManager();
+		  SchemeRegistry sr = ccm.getSchemeRegistry();
+		  sr.register(new Scheme("https", ssf, 443));
+		  
+		  return new DefaultHttpClient(ccm, client.getParams());
+		  
+	  } catch (Exception ex) {
+		  return null;
+	  }
+  }
 
-	     public MySSLSocketFactory(KeyStore truststore) throws NoSuchAlgorithmException, KeyManagementException, KeyStoreException, UnrecoverableKeyException {
-	         super(truststore);
-
-	         TrustManager tm = new X509TrustManager() {
-	             public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-	             }
-
-	             public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-	             }
-
-	             public X509Certificate[] getAcceptedIssuers() {
-	                 return null;
-	             }
-	         };
-
-	         sslContext.init(null, new TrustManager[] { tm }, null);
-	     }
-
-	     public MySSLSocketFactory(SSLContext context) throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException, UnrecoverableKeyException {
-	        super(null);
-	        sslContext = context;
-	     }
-
-	     @Override
-	     public Socket createSocket(Socket socket, String host, int port, boolean autoClose) throws IOException, UnknownHostException {
-	         return sslContext.getSocketFactory().createSocket(socket, host, port, autoClose);
-	     }
-
-	     @Override
-	     public Socket createSocket() throws IOException {
-	         return sslContext.getSocketFactory().createSocket();
-	     }
-	}
+  /*-------------------------------------------------------
+   * Reads a whole InputStream and converts it into a String for processing. 
+   * Gotten from StackOverflow. 
+   * @is - An existing InputStream
+   * 
+   */
   private String inputStreamToString(InputStream is) {
 	  String line = "";
 	  StringBuilder total = new StringBuilder();
@@ -298,47 +289,11 @@ public class SearchBase {
 	  return total.toString();
   }
   
-  public String processDirectionResponse(String resp) throws IllegalStateException, 
-	IOException, JSONException, NoSuchAlgorithmException {
-		
-		Log.v("gsearch","gsearch result:"+resp);
-		JSONObject mResponseObject = new JSONObject(resp);
-		JSONArray routes = mResponseObject.getJSONArray("routes");
-		JSONObject routeFirst = routes.getJSONObject(0);
-		JSONObject polyline = routeFirst.getJSONObject("overview_polyline");
-		String result = polyline.getString("points");
-		return result;
-		
-	}
-	
-	private class myGoogleSearch extends AsyncTask<String, Integer, String> {
-		
-		protected String doInBackground(String... searchKey) {
-			
-			String key = searchKey[0];
 
-			try{
-				return searchRequest(key);
-			}catch(Exception e){
-				Log.v("Exception google search","Exception:"+e.getMessage());
-				return "";
-						
-			}
-		}		
-		
-		/*
-		protected void onPostExecute(String result) {
-			try{
-				processResponse(result);
-			}catch(Exception e){
-				Log.v("Exception google search","Exception:"+e.getMessage());
-						
-			}		
-		}
-		*/
-	}
-	
-	//straight from google. decodes polyline
+  /*-------------------------------------------------------
+   * Converts a String polyline into a list of GeoPoints. Provided by Google. 
+   * @encoded - The polyline itself. 
+   */
 	private List<GeoPoint> decodePoly(String encoded) {
 
 		  List<GeoPoint> poly = new ArrayList<GeoPoint>();
@@ -373,7 +328,10 @@ public class SearchBase {
 		  return poly;
 	}
   
-  
+ /*-------------------------------------------------------
+  * For testing only 
+  * 
+  */
   public ArrayList<Place> genFakePlaces() {
     ArrayList<Place> results = new ArrayList<Place>();
       Place p1 = new Place("Zoo", "1234567890", 41313133, -72925149, "51 Prospect Street New Haven, CT 06511", 1.5, 3 );

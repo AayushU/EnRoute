@@ -2,9 +2,6 @@ package com.example.enroute;
 
 import java.util.ArrayList;
 
-import com.example.enroute.SearchBase.LocationResult;
-import com.sun.tools.javac.util.List;
-
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -47,8 +44,8 @@ public class SearchActivity extends Activity {
 		setContentView(R.layout.activity_search);
 		
     //find our UI elements
-    destinationInput = (EditText) findViewById(R.id.queryInput);
-    queryInput = (EditText) findViewById(R.id.destinationInput);
+    destinationInput = (EditText) findViewById(R.id.destinationInput);
+    queryInput = (EditText) findViewById(R.id.queryInput);
     
 		//initialize instance vars
 		searchHandler = new Handler();
@@ -104,15 +101,15 @@ public class SearchActivity extends Activity {
       String query = queryInput.getText().toString();
 
       //call the main search algorithm
-//      SearchBase sb = new SearchBase();
-//      polyline = sb.loadSearchResults( destination, query );
-//      places = sb.loadLocationResult(destination, query, polyline);     
+      SearchBase sb = new SearchBase();
+      polyline = sb.loadSearchResults(destination, query );
+      places = sb.loadLocationResult(destination, query, polyline);     
       
       
       /****************************************************************************
        * DEMO COMMENT BLOCK
        ****************************************************************************/
-      
+      /*
       destination = "Hartford";
       query = "Starbucks";
       polyline = "u~b{Fhwb|LqGkEtJmZtBcHEc@{E_DwEaE{BoCYWgCoETe@FiAYuCeCgJy@_NSoAi@w@e@Uw@CuBKcAg@[[qDcHg@q@wJsVuAuD_EgMo@mI[}NMcC?m@o@qDeDyOWcA}CwN_DkNsDaL}AmDiAiBiFuHiEuEeHcFwOqHkFoCm[eQwN}JuX}RwFgDuEkBaGuAoE_A{NyCiGm@}BAwADmOpAsIrAiGE{Qe@_Hb@mHfAoLlBaJzAuCTeCFwGAmHe@{Pe@eBIiIs@mDo@kAUiWoHaDeAuB]}M}AoXeDqFq@cEq@iFiBaCgAyFyDyDmDsE{F}CqFmDwImB{Gu@oDqBmRsF}r@g@mF_AiGsAaGyD}K_DqGkCyD{DiEgC}BcEeCiGwCqL_E{[iLcNcFsE_CmKyH}DkDiJoIyC}CgFqH}D_IeCaGeJwZaNuc@cFcMuA_DwHeNkAsBwH}M_FcIcHaJ}LyLwc@qb@{`@}_@kLoL{DkDqHcFcHcDcIkCaMsDm~@aXyw@iU}IoC_NcDoGy@gKs@sMG{FVy\\hCcj@hEoI^ma@l@_FTaj@zGaCl@wDh@_CPmDKoDk@yU_EkXuE{FiAsCaAiCaBuAaA_CiCyCiFgF{J_D_GuCwF_@q@gDcGaD_HiS}`@w@sAoAsBsCoFqC}DaEwEsIoGaH{CcIyEwScJ_MoGaGmDeCkBcE}DeKoMaS{a@{E{IyLkSmGmHsFiGqHcH{IsHah@}\\sSoPmBmAmEgDoFaDiGgCmI{BwX_FwJ{AyLcC}E_B{GkDkXwOwWiOaXkOoLkG}EkB{O}HiMsHoFyDkCqBkUeRq@k@}LaIgIyCeMwDeQmGcF_DwG_Fs_@e_@aA}@mE{EmIwH_EwBsE{BoCaA_FmAkEw@q[cEeHeAsCi@gEmAiDkAcOsFeFeC}P{Kgc@sZuLkIkEsDmE}DgMqMeHoGoC{Bc@_@kVcLgMqFo_Acb@sGeBmEm@iBOcC@aF^oFv@uKxAeWtDwAZ_HtBuGtCuHdDgCjAsL|EiIzBgTbDeDj@{BdA_DfBgDbD}EvG{HfKyLdSaKzPaDzCaClByBjAa@R{DtAoCj@{FLcIk@gDw@kNsDmFgBaDqAgDsBuB}AoEmDaJyGsF{BqB_@{BUwGDeCVyBf@mBr@eBz@o@j@gBhBuLlN}@~AqHrHiGpF}@|A[pAk@zH}@pCcA~EW~BeAxL_BlLu@fDq@v@{@Fa@VO^?z@P^ZPn@Dl@a@j@C|BbArAh@}@jFeDjQc@|BiBbNg@xE}@A";      
@@ -151,12 +148,13 @@ public class SearchActivity extends Activity {
       places.add(p5);
       places.add(p6);
       places.add(p7);
+      */
       
       /****************************************************************************
        * END DEMO BLOCK
        ****************************************************************************/
       
-      return "";
+      return polyline;
     }   
     
     //after background task completes
